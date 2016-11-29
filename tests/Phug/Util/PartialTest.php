@@ -275,6 +275,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      * @covers Phug\Util\Partial\OptionTrait
      * @covers Phug\Util\Partial\OptionTrait::getOptions
      * @covers Phug\Util\Partial\OptionTrait::setOptions
+     * @covers Phug\Util\Partial\OptionTrait::setOptionsRecursive
      * @covers Phug\Util\Partial\OptionTrait::getOption
      * @covers Phug\Util\Partial\OptionTrait::setOption
      */
@@ -312,7 +313,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $cloned->setOptions($flatOptions);
         $this->assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
 
-        $inst->setOptions($deepOptions, true);
+        $inst->setOptionsRecursive($deepOptions);
         $this->assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOption('b', 5);
