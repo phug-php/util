@@ -1,12 +1,13 @@
 <?php
 
-namespace Phug\Test;
+namespace Phug\Test\Util;
 
+use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use stdClass;
 
 //@codingStandardsIgnoreStart
-class TestClass
+class TestClass implements OptionInterface
 {
     use Partial\AssignmentTrait;
     use Partial\AttributeTrait;
@@ -21,13 +22,15 @@ class TestClass
     use Partial\SubjectTrait;
     use Partial\ValueTrait;
     use Partial\VisibleTrait;
+    use Partial\OptionTrait;
 }
 
 
-class UtilTest extends \PHPUnit_Framework_TestCase
+class PartialTest extends \PHPUnit_Framework_TestCase
 {
     
     /**
+     * @covers Phug\Util\Partial\AssignmentTrait
      * @covers Phug\Util\Partial\AssignmentTrait::getAssignments
      */
     public function testAssignmentTrait()
@@ -44,6 +47,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\AttributeTrait
      * @covers Phug\Util\Partial\AttributeTrait::getAttributes
      */
     public function testAttributeTrait()
@@ -60,6 +64,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\BlockTrait
      * @covers Phug\Util\Partial\BlockTrait::isBlock
      * @covers Phug\Util\Partial\BlockTrait::setIsBlock
      */
@@ -77,6 +82,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\CheckTrait
      * @covers Phug\Util\Partial\CheckTrait::isChecked
      * @covers Phug\Util\Partial\CheckTrait::setIsChecked
      * @covers Phug\Util\Partial\CheckTrait::check
@@ -102,6 +108,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\EscapeTrait
      * @covers Phug\Util\Partial\EscapeTrait::isEscaped
      * @covers Phug\Util\Partial\EscapeTrait::setIsEscaped
      * @covers Phug\Util\Partial\EscapeTrait::escape
@@ -127,6 +134,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\FilterTrait
      * @covers Phug\Util\Partial\FilterTrait::setFilter
      * @covers Phug\Util\Partial\FilterTrait::getFilter
      */
@@ -141,6 +149,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\ModeTrait
      * @covers Phug\Util\Partial\ModeTrait::setMode
      * @covers Phug\Util\Partial\ModeTrait::getMode
      */
@@ -155,6 +164,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\NameTrait
      * @covers Phug\Util\Partial\NameTrait::setName
      * @covers Phug\Util\Partial\NameTrait::getName
      */
@@ -169,6 +179,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\PairTrait
      * @covers Phug\Util\Partial\PairTrait::setKey
      * @covers Phug\Util\Partial\PairTrait::getKey
      * @covers Phug\Util\Partial\PairTrait::setItem
@@ -189,6 +200,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\PathTrait
      * @covers Phug\Util\Partial\PathTrait::setPath
      * @covers Phug\Util\Partial\PathTrait::getPath
      */
@@ -203,6 +215,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\SubjectTrait
      * @covers Phug\Util\Partial\SubjectTrait::setSubject
      * @covers Phug\Util\Partial\SubjectTrait::getSubject
      */
@@ -217,6 +230,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\ValueTrait
      * @covers Phug\Util\Partial\ValueTrait::setValue
      * @covers Phug\Util\Partial\ValueTrait::getValue
      */
@@ -231,6 +245,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phug\Util\Partial\VisibleTrait
      * @covers Phug\Util\Partial\VisibleTrait::isVisible
      * @covers Phug\Util\Partial\VisibleTrait::setIsVisible
      * @covers Phug\Util\Partial\VisibleTrait::hide
@@ -253,6 +268,55 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
         $inst->show();
         $this->assertTrue($inst->isVisible(), 'show');
+    }
+
+    /**
+     * @covers Phug\Util\OptionInterface
+     * @covers Phug\Util\Partial\OptionTrait
+     * @covers Phug\Util\Partial\OptionTrait::getOptions
+     * @covers Phug\Util\Partial\OptionTrait::setOptions
+     * @covers Phug\Util\Partial\OptionTrait::getOption
+     * @covers Phug\Util\Partial\OptionTrait::setOption
+     */
+    public function testOptionTraitAndInterface()
+    {
+
+        $inst = new TestClass;
+        $this->assertInternalType('array', $inst->getOptions());
+        $this->assertCount(0, $inst->getOptions());
+
+        $options = [
+            'a' => 1,
+            'b' => [
+                'c' => 2,
+                'd' => 3
+            ]
+        ];
+
+        $flatOptions = [
+            'b' => 2
+        ];
+
+        $deepOptions = [
+            'b' => [
+                'c' => 3,
+                'e' => 4
+            ]
+        ];
+
+        $inst->setOptions($options);
+        $this->assertEquals($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        $this->assertEquals(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
+
+        $cloned = clone $inst;
+        $cloned->setOptions($flatOptions);
+        $this->assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
+
+        $inst->setOptions($deepOptions, true);
+        $this->assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
+
+        $inst->setOption('b', 5);
+        $this->assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
     }
 }
 //@codingStandardsIgnoreEnd
