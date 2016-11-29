@@ -1,25 +1,38 @@
 #!/usr/bin/php
 <?php
 
-$code = true;
+//The PHP version this is running in
+$phpVersion = isset($argv[1]) ? $argv[1] : 'php';
+
+//The commands to run (sequentially)
 $commands = [
     'phpunit',
     'phpcs',
     'php ./bin/validate-coverage'
 ];
 
+echo "Validating build (PHP Version: $phpVersion)...", PHP_EOL;
+
+//Switch to root directory
 chdir(dirname(__DIR__));
 
-
+$code = true;
 foreach ($commands as $command) {
 
+    //Don't run phpcs on HHVM (Can't install via PEAR)
+    if (strncmp($phpVersion, 'hhvm', 4) === 0 && in_array($command, ['phpcs']))
+        continue;
+
+    //Run the command, fetch return code
     passthru($command, $code);
 
+    //Check return code
     if ($code !== 0) {
 
-        echo "VALIDATION: FAILED ($code)", PHP_EOL;
+        echo "Validation: FAILED ($code)", PHP_EOL;
         exit(1);
     }
 }
 
-echo "VALIDATION: SUCCESS!", PHP_EOL;
+//All done
+echo "Validation: SUCCESS!", PHP_EOL;
