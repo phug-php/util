@@ -13,12 +13,18 @@ trait OptionTrait
         return $this->options;
     }
 
-    public function setOptions(array $options, $recursive = false)
+    public function setOptions(array $options)
     {
 
-        $fn = 'array_replace'.($recursive ? '_recursive' : '');
+        $this->options = array_replace($this->options, $options);
 
-        $this->options = $fn($this->options, $options);
+        return $this;
+    }
+
+    public function setOptionsRecursive(array $options)
+    {
+
+        $this->options = array_replace_recursive($this->options, $options);
 
         return $this;
     }
