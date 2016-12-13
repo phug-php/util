@@ -5,7 +5,7 @@ namespace Phug\Util\Partial;
 trait OptionTrait
 {
 
-    private $options = [];
+    protected $options = [];
 
     public function getOptions()
     {
