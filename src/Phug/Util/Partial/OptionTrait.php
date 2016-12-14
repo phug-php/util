@@ -5,7 +5,17 @@ namespace Phug\Util\Partial;
 trait OptionTrait
 {
 
-    protected $options = [];
+    private $options = [];
+
+    public function setOptionsArrays(array $optionsArrays, $method = 'array_replace')
+    {
+
+        $optionsArrays = array_filter($optionsArrays, 'is_array');
+        array_unshift($optionsArrays, $this->options);
+        $this->options = call_user_func_array($method, $optionsArrays);
+
+        return $this;
+    }
 
     public function getOptions()
     {
@@ -16,17 +26,13 @@ trait OptionTrait
     public function setOptions(array $options)
     {
 
-        $this->options = array_replace($this->options, $options);
-
-        return $this;
+        return $this->setOptionsArrays(func_get_args());
     }
 
     public function setOptionsRecursive(array $options)
     {
 
-        $this->options = array_replace_recursive($this->options, $options);
-
-        return $this;
+        return $this->setOptionsArrays(func_get_args(), 'array_replace_recursive');
     }
 
     public function getOption($name)

@@ -290,19 +290,30 @@ class PartialTest extends \PHPUnit_Framework_TestCase
             'a' => 1,
             'b' => [
                 'c' => 2,
-                'd' => 3
-            ]
+                'd' => 3,
+            ],
         ];
 
         $flatOptions = [
-            'b' => 2
+            'b' => 2,
+        ];
+
+        $anotherFlatOptions = [
+            'a' => 3,
         ];
 
         $deepOptions = [
             'b' => [
                 'c' => 3,
-                'e' => 4
-            ]
+                'e' => 4,
+            ],
+        ];
+
+        $anotherDeepOptions = [
+            'b' => [
+                'e' => 5,
+                'f' => 6,
+            ],
         ];
 
         $inst->setOptions($options);
@@ -313,8 +324,15 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $cloned->setOptions($flatOptions);
         $this->assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
 
+        $cloned->setOptions([], null, $anotherFlatOptions);
+        $this->assertEquals(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
+
         $inst->setOptionsRecursive($deepOptions);
         $this->assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
+
+        $inst->setOptionsRecursive([], $anotherDeepOptions);
+        $this->assertEquals(5, $inst->getOption('b')['e'], '$inst->getOption(b)[e] === 5 (second argument)');
+        $this->assertEquals(6, $inst->getOption('b')['f'], '$inst->getOption(b)[f] === 6 (second argument)');
 
         $inst->setOption('b', 5);
         $this->assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
