@@ -12,7 +12,7 @@ trait OptionTrait
     /**
      * @var array
      */
-    protected $options = [];
+    private $options = [];
 
     /**
      * @param array $arrays
@@ -22,13 +22,8 @@ trait OptionTrait
     private function setOptionArrays(array $arrays, $fn)
     {
 
-        foreach ($arrays as $array) {
-            if (!is_array($array)) {
-                continue;
-            }
-
-            $this->options = $fn($this->options, $array);
-        }
+        array_unshift($arrays, $this->options);
+        $this->options = call_user_func_array($fn, array_filter($arrays, 'is_array'));
 
         return $this;
     }
