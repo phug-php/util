@@ -2,17 +2,31 @@
 
 namespace Phug\Util\Partial;
 
+/**
+ * Class EscapeTrait
+ * @package Phug\Util\Partial
+ */
 trait EscapeTrait
 {
 
+    /**
+     * @var bool
+     */
     private $escaped = false;
 
+    /**
+     * @return bool
+     */
     public function isEscaped()
     {
 
         return $this->escaped;
     }
 
+    /**
+     * @param bool $escaped
+     * @return $this
+     */
     public function setIsEscaped($escaped)
     {
 
@@ -21,6 +35,9 @@ trait EscapeTrait
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function escape()
     {
 
@@ -29,6 +46,9 @@ trait EscapeTrait
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function unescape()
     {
 

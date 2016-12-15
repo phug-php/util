@@ -2,17 +2,31 @@
 
 namespace Phug\Util\Partial;
 
+/**
+ * Class CheckTrait
+ * @package Phug\Util\Partial
+ */
 trait CheckTrait
 {
 
+    /**
+     * @var bool
+     */
     private $checked = true;
 
+    /**
+     * @return bool
+     */
     public function isChecked()
     {
 
         return $this->checked;
     }
 
+    /**
+     * @param bool $checked
+     * @return $this
+     */
     public function setIsChecked($checked)
     {
 
@@ -21,6 +35,9 @@ trait CheckTrait
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function check()
     {
 
@@ -29,6 +46,9 @@ trait CheckTrait
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function uncheck()
     {
 

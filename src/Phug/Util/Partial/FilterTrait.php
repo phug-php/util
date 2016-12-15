@@ -2,9 +2,16 @@
 
 namespace Phug\Util\Partial;
 
+/**
+ * Class FilterTrait
+ * @package Phug\Util\Partial
+ */
 trait FilterTrait
 {
 
+    /**
+     * @var string
+     */
     private $filter = null;
 
     /**
@@ -12,6 +19,7 @@ trait FilterTrait
      */
     public function getFilter()
     {
+
         return $this->filter;
     }
 
@@ -22,6 +30,7 @@ trait FilterTrait
      */
     public function setFilter($filter)
     {
+
         $this->filter = $filter;
 
         return $this;
