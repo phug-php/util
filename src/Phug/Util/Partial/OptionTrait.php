@@ -2,45 +2,76 @@
 
 namespace Phug\Util\Partial;
 
+/**
+ * Class OptionTrait
+ * @package Phug\Util\Partial
+ */
 trait OptionTrait
 {
 
-    private $options = [];
+    /**
+     * @var array
+     */
+    protected $options = [];
 
-    public function setOptionsArrays(array $optionsArrays, $method = 'array_replace')
+    /**
+     * @param array $arrays
+     * @param string $fn
+     * @return $this
+     */
+    private function setOptionArrays(array $arrays, $fn)
     {
 
-        $optionsArrays = array_filter($optionsArrays, 'is_array');
-        array_unshift($optionsArrays, $this->options);
-        $this->options = call_user_func_array($method, $optionsArrays);
+        foreach ($arrays as $array) {
+            if (!is_array($array)) {
+                continue;
+            }
+
+            $this->options = $fn($this->options, $array);
+        }
 
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOptions()
     {
 
         return $this->options;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setOptions(array $options)
     {
 
-        return $this->setOptionsArrays(func_get_args());
+        return $this->setOptionArrays(func_get_args(), 'array_replace');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setOptionsRecursive(array $options)
     {
 
-        return $this->setOptionsArrays(func_get_args(), 'array_replace_recursive');
+        return $this->setOptionArrays(func_get_args(), 'array_replace_recursive');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOption($name)
     {
 
         return $this->options[$name];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setOption($name, $value)
     {
 
