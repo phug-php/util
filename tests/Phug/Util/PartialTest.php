@@ -2,12 +2,17 @@
 
 namespace Phug\Test\Util;
 
+use Phug\Util\DocumentLocationInterface;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use stdClass;
 
 //@codingStandardsIgnoreStart
-class TestClass implements OptionInterface
+/**
+ * Class TestClass
+ * @package Phug\Test\Util
+ */
+class TestClass implements OptionInterface, DocumentLocationInterface
 {
     use Partial\AssignmentTrait;
     use Partial\AttributeTrait;
@@ -23,6 +28,26 @@ class TestClass implements OptionInterface
     use Partial\ValueTrait;
     use Partial\VisibleTrait;
     use Partial\OptionTrait;
+    use Partial\DocumentLocationTrait;
+    use Partial\LevelTrait;
+
+    /**
+     * @param int $line
+     */
+    public function setLine($line)
+    {
+
+        $this->line = $line;
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function setOffset($offset)
+    {
+
+        $this->offset = $offset;
+    }
 }
 class ValueClass
 {
@@ -30,6 +55,10 @@ class ValueClass
 }
 
 
+/**
+ * Class PartialTest
+ * @package Phug\Test\Util
+ */
 class PartialTest extends \PHPUnit_Framework_TestCase
 {
     
@@ -41,13 +70,13 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertInstanceOf(\SplObjectStorage::class, $inst->getAssignments());
+        self::assertInstanceOf(\SplObjectStorage::class, $inst->getAssignments());
 
         $someObj = new stdClass();
         $inst->getAssignments()->attach($someObj);
 
-        $this->assertTrue($inst->getAssignments()->contains($someObj));
-        $this->assertEquals(1, $inst->getAssignments()->count());
+        self::assertTrue($inst->getAssignments()->contains($someObj));
+        self::assertEquals(1, $inst->getAssignments()->count());
     }
 
     /**
@@ -58,13 +87,13 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertInstanceOf(\SplObjectStorage::class, $inst->getAttributes());
+        self::assertInstanceOf(\SplObjectStorage::class, $inst->getAttributes());
 
         $someObj = new stdClass();
         $inst->getAttributes()->attach($someObj);
 
-        $this->assertTrue($inst->getAttributes()->contains($someObj));
-        $this->assertEquals(1, $inst->getAttributes()->count());
+        self::assertTrue($inst->getAttributes()->contains($someObj));
+        self::assertEquals(1, $inst->getAttributes()->count());
     }
 
     /**
@@ -76,13 +105,13 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertFalse($inst->isBlock(), 'after ctor');
+        self::assertFalse($inst->isBlock(), 'after ctor');
 
         $inst->setIsBlock(true);
-        $this->assertTrue($inst->isBlock(), 'setIsBlock(true)');
+        self::assertTrue($inst->isBlock(), 'setIsBlock(true)');
 
         $inst->setIsBlock(false);
-        $this->assertFalse($inst->isBlock(), 'setIsBlock(false)');
+        self::assertFalse($inst->isBlock(), 'setIsBlock(false)');
     }
 
     /**
@@ -96,19 +125,57 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertTrue($inst->isChecked());
+        self::assertTrue($inst->isChecked());
 
         $inst->setIsChecked(false);
-        $this->assertFalse($inst->isChecked(), 'setIsChecked(false)');
+        self::assertFalse($inst->isChecked(), 'setIsChecked(false)');
 
         $inst->setIsChecked(true);
-        $this->assertTrue($inst->isChecked(), 'setIsChecked(true)');
+        self::assertTrue($inst->isChecked(), 'setIsChecked(true)');
 
         $inst->uncheck();
-        $this->assertFalse($inst->isChecked(), 'uncheck');
+        self::assertFalse($inst->isChecked(), 'uncheck');
 
         $inst->check();
-        $this->assertTrue($inst->isChecked(), 'check');
+        self::assertTrue($inst->isChecked(), 'check');
+    }
+
+    /**
+     * @covers Phug\Util\DocumentLocationInterface
+     * @covers Phug\Util\Partial\DocumentLocationTrait
+     * @covers Phug\Util\Partial\LineGetTrait
+     * @covers Phug\Util\Partial\LineGetTrait::getLine
+     * @covers Phug\Util\Partial\OffsetGetTrait
+     * @covers Phug\Util\Partial\OffsetGetTrait::getOffset
+     */
+    public function testDocumentLocationTrait()
+    {
+
+        $inst = new TestClass;
+        self::assertNull($inst->getLine());
+        self::assertNull($inst->getOffset());
+
+        $inst->setLine(15);
+        self::assertEquals(15, $inst->getLine(), 'getLine()');
+
+        $inst->setOffset(23);
+        self::assertEquals(23, $inst->getOffset(), 'getOffset()');
+    }
+
+    /**
+     * @covers Phug\Util\Partial\LevelTrait
+     * @covers Phug\Util\Partial\LevelTrait::setLevel
+     * @covers Phug\Util\Partial\LevelGetTrait
+     * @covers Phug\Util\Partial\LevelGetTrait::getLevel
+     */
+    public function testLevelTrait()
+    {
+
+        $inst = new TestClass;
+        self::assertEquals(0, $inst->getLevel());
+
+        $inst->setLevel(101);
+        self::assertEquals(101, $inst->getLevel());
     }
 
     /**
@@ -122,19 +189,19 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertFalse($inst->isEscaped());
+        self::assertFalse($inst->isEscaped());
 
         $inst->setIsEscaped(true);
-        $this->assertTrue($inst->isEscaped(), 'setIsEscaped(true)');
+        self::assertTrue($inst->isEscaped(), 'setIsEscaped(true)');
 
         $inst->setIsEscaped(false);
-        $this->assertFalse($inst->isEscaped(), 'setIsEscaped(false)');
+        self::assertFalse($inst->isEscaped(), 'setIsEscaped(false)');
 
         $inst->escape();
-        $this->assertTrue($inst->isEscaped(), 'escape');
+        self::assertTrue($inst->isEscaped(), 'escape');
 
         $inst->unescape();
-        $this->assertFalse($inst->isEscaped(), 'unescape');
+        self::assertFalse($inst->isEscaped(), 'unescape');
     }
 
     /**
@@ -146,10 +213,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getFilter());
+        self::assertNull($inst->getFilter());
 
         $inst->setFilter('test filter');
-        $this->assertEquals('test filter', $inst->getFilter());
+        self::assertEquals('test filter', $inst->getFilter());
     }
 
     /**
@@ -161,10 +228,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getMode());
+        self::assertNull($inst->getMode());
 
         $inst->setMode('test mode');
-        $this->assertEquals('test mode', $inst->getMode());
+        self::assertEquals('test mode', $inst->getMode());
     }
 
     /**
@@ -176,10 +243,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getName());
+        self::assertNull($inst->getName());
 
         $inst->setName('test name');
-        $this->assertEquals('test name', $inst->getName());
+        self::assertEquals('test name', $inst->getName());
     }
 
     /**
@@ -193,14 +260,14 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getKey());
-        $this->assertNull($inst->getValue());
+        self::assertNull($inst->getKey());
+        self::assertNull($inst->getValue());
 
         $inst->setKey('test key');
-        $this->assertEquals('test key', $inst->getKey());
+        self::assertEquals('test key', $inst->getKey());
 
         $inst->setItem('test item');
-        $this->assertEquals('test item', $inst->getItem());
+        self::assertEquals('test item', $inst->getItem());
     }
 
     /**
@@ -212,10 +279,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getPath());
+        self::assertNull($inst->getPath());
 
         $inst->setPath('test path');
-        $this->assertEquals('test path', $inst->getPath());
+        self::assertEquals('test path', $inst->getPath());
     }
 
     /**
@@ -227,10 +294,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getSubject());
+        self::assertNull($inst->getSubject());
 
         $inst->setSubject('test subject');
-        $this->assertEquals('test subject', $inst->getSubject());
+        self::assertEquals('test subject', $inst->getSubject());
     }
 
     /**
@@ -242,10 +309,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertNull($inst->getValue());
+        self::assertNull($inst->getValue());
 
         $inst->setValue('test value');
-        $this->assertEquals('test value', $inst->getValue());
+        self::assertEquals('test value', $inst->getValue());
     }
 
     /**
@@ -259,19 +326,19 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertTrue($inst->isVisible());
+        self::assertTrue($inst->isVisible());
 
         $inst->setIsVisible(false);
-        $this->assertFalse($inst->isVisible(), 'setIsVisible(false)');
+        self::assertFalse($inst->isVisible(), 'setIsVisible(false)');
 
         $inst->setIsVisible(true);
-        $this->assertTrue($inst->isVisible(), 'setIsVisible(true)');
+        self::assertTrue($inst->isVisible(), 'setIsVisible(true)');
 
         $inst->hide();
-        $this->assertFalse($inst->isVisible(), 'hide');
+        self::assertFalse($inst->isVisible(), 'hide');
 
         $inst->show();
-        $this->assertTrue($inst->isVisible(), 'show');
+        self::assertTrue($inst->isVisible(), 'show');
     }
 
     /**
@@ -287,8 +354,8 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        $this->assertInternalType('array', $inst->getOptions());
-        $this->assertCount(0, $inst->getOptions());
+        self::assertInternalType('array', $inst->getOptions());
+        self::assertCount(0, $inst->getOptions());
 
         $options = [
             'a' => 1,
@@ -321,25 +388,25 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         ];
 
         $inst->setOptions($options);
-        $this->assertEquals($options, $inst->getOptions(), '$options === $inst->getOptions()');
-        $this->assertEquals(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
+        self::assertEquals($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        self::assertEquals(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
         $cloned->setOptions($flatOptions);
-        $this->assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
+        self::assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
 
         $cloned->setOptions([], null, $anotherFlatOptions);
-        $this->assertEquals(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
+        self::assertEquals(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
 
         $inst->setOptionsRecursive($deepOptions);
-        $this->assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
+        self::assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOptionsRecursive([], $anotherDeepOptions);
-        $this->assertEquals(5, $inst->getOption('b')['e'], '$inst->getOption(b)[e] === 5 (second argument)');
-        $this->assertEquals(6, $inst->getOption('b')['f'], '$inst->getOption(b)[f] === 6 (second argument)');
+        self::assertEquals(5, $inst->getOption('b')['e'], '$inst->getOption(b)[e] === 5 (second argument)');
+        self::assertEquals(6, $inst->getOption('b')['f'], '$inst->getOption(b)[f] === 6 (second argument)');
 
         $inst->setOption('b', 5);
-        $this->assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
+        self::assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
     }
 }
 //@codingStandardsIgnoreEnd
