@@ -24,6 +24,10 @@ class TestClass implements OptionInterface
     use Partial\VisibleTrait;
     use Partial\OptionTrait;
 }
+class ValueClass
+{
+	use Partial\ValueHandlerTrait;
+}
 
 
 class PartialTest extends \PHPUnit_Framework_TestCase
