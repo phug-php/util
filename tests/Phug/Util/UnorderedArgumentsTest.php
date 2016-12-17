@@ -7,16 +7,18 @@ use Phug\Util\UnorderedArguments;
 /**
  * Class UnorderedArgumentsTest
  * @package Phug\Test\Util
- * @coversDefaultClass \Phug\Util\UnorderedArguments
+ * @coversDefaultClass Phug\Util\UnorderedArguments
  */
 class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @covers ::__construct
      * @covers ::optional
      */
     public function testOptional()
     {
+
         $arguments = new UnorderedArguments(['foo', 42]);
 
         self::assertSame(42, $arguments->optional('integer'));
@@ -29,7 +31,8 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequired()
     {
-        $argument = new UnorderedArguments('test');
+
+        $argument = new UnorderedArguments(['test']);
         $arguments = new UnorderedArguments(['foo', 42, $argument]);
 
         self::assertSame('foo', $arguments->required('string'));
@@ -44,7 +47,8 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequiredException()
     {
-        $argument = new UnorderedArguments('test');
+
+        $argument = new UnorderedArguments(['test']);
         $arguments = new UnorderedArguments(['foo', 42, $argument, []]);
 
         $arguments->required('boolean');
@@ -55,10 +59,11 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreArguments()
     {
+
         $arguments = new UnorderedArguments(['foo']);
 
         $arguments->optional('string');
-        self::assertSame(null, $arguments->noMoreArguments());
+        $arguments->noMoreArguments();
     }
 
     /**
@@ -68,6 +73,7 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreArgumentsException()
     {
+
         $arguments = new UnorderedArguments(['foo', 'bar', 'biz', 42]);
 
         $arguments->optional('string');
@@ -82,6 +88,7 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreUndefinedArgumentsException()
     {
+
         $arguments = new UnorderedArguments(['foo', null, 'biz', null]);
 
         $arguments->optional('string');
@@ -97,6 +104,7 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreDefinedArgumentsException()
     {
+
         $arguments = new UnorderedArguments(['foo', 'biz', 1, null]);
 
         $arguments->optional('string');

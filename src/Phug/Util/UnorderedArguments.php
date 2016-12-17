@@ -4,16 +4,34 @@ namespace Phug\Util;
 
 use InvalidArgumentException;
 
+/**
+ * Class UnorderedArguments
+ *
+ * @package Phug\Util
+ */
 class UnorderedArguments
 {
 
+    /**
+     * @var
+     */
     protected $arguments;
 
-    public function __construct($arguments)
+    /**
+     * UnorderedArguments constructor.
+     *
+     * @param array $arguments
+     */
+    public function __construct(array $arguments)
     {
         $this->arguments = $arguments;
     }
 
+    /**
+     * @param $type
+     *
+     * @return mixed
+     */
     public function optional($type)
     {
         foreach ($this->arguments as $index => $argument) {
@@ -25,6 +43,11 @@ class UnorderedArguments
         }
     }
 
+    /**
+     * @param $type
+     *
+     * @return mixed
+     */
     public function required($type)
     {
         $count = count($this->arguments);
@@ -36,6 +59,9 @@ class UnorderedArguments
         return $argument;
     }
 
+    /**
+     *
+     */
     public function noMoreArguments()
     {
         if ($count = count($this->arguments)) {
@@ -43,6 +69,9 @@ class UnorderedArguments
         }
     }
 
+    /**
+     *
+     */
     public function noMoreDefinedArguments()
     {
         $definedArguments = array_filter($this->arguments, function ($argument) {
