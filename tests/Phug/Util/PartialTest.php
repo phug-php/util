@@ -49,10 +49,6 @@ class TestClass implements OptionInterface, DocumentLocationInterface
         $this->offset = $offset;
     }
 }
-class ValueClass
-{
-	use Partial\ValueHandlerTrait;
-}
 
 
 /**
@@ -407,21 +403,6 @@ class PartialTest extends \PHPUnit_Framework_TestCase
 
         $inst->setOption('b', 5);
         self::assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
-    }
-
-
-    /**
-     * @covers Phug\Util\Partial\ValueHandlerTrait
-     * @covers Phug\Util\Partial\ValueHandlerTrait::__construct
-     */
-    public function testValueHandlerTrait()
-    {
-
-        $inst = new ValueClass('foo');
-        self::assertSame('foo', $inst->getValue());
-
-        $inst->setValue(42);
-        self::assertSame(42, $inst->getValue());
     }
 }
 //@codingStandardsIgnoreEnd
