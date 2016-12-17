@@ -15,15 +15,16 @@ trait OptionTrait
     private $options = [];
 
     /**
-     * @param array $arrays
-     * @param string $fn
+     * @param array  $arrays
+     * @param string $functionName
+     *
      * @return $this
      */
-    private function setOptionArrays(array $arrays, $fn)
+    private function setOptionArrays(array $arrays, $functionName)
     {
 
         array_unshift($arrays, $this->options);
-        $this->options = call_user_func_array($fn, array_filter($arrays, 'is_array'));
+        $this->options = call_user_func_array($functionName, array_filter($arrays, 'is_array'));
 
         return $this;
     }
