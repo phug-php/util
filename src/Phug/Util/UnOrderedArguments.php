@@ -4,7 +4,7 @@ namespace Phug\Util;
 
 use InvalidArgumentException;
 
-class UnOrderedArguments
+class UnorderedArguments
 {
 
     protected $arguments;
@@ -40,6 +40,17 @@ class UnOrderedArguments
     {
         if ($count = count($this->arguments)) {
             throw new InvalidArgumentException('You pass '.$count.' unexpected arguments');
+        }
+    }
+
+    public function noMoreDefinedArguments()
+    {
+        $definedArguments = array_filter($this->arguments, function ($argument) {
+            return !is_null($argument);
+        });
+
+        if ($count = count($definedArguments)) {
+            throw new InvalidArgumentException('You pass '.$count.' unexpected not null arguments');
         }
     }
 }
