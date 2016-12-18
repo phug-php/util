@@ -67,7 +67,8 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   ::required
+     * @covers                   ::noMoreArguments
+     * @covers                   ::noMoreDefinedArguments
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage You pass 2 unexpected arguments
      */
@@ -82,7 +83,8 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   ::required
+     * @covers                   ::noMoreArguments
+     * @covers                   ::noMoreDefinedArguments
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage You pass 2 unexpected arguments
      */
@@ -98,7 +100,8 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   ::required
+     * @covers                   ::noMoreArguments
+     * @covers                   ::noMoreDefinedArguments
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage You pass 1 unexpected not null arguments
      */

@@ -19,6 +19,7 @@ class UnorderedArguments
 
     /**
      * UnorderedArguments constructor.
+     * Store arguments array (tipycally func_get_args()).
      *
      * @param array $arguments
      */
@@ -28,6 +29,9 @@ class UnorderedArguments
     }
 
     /**
+     * Ask for an optional argument by type then pop and return
+     * the first found from the list.
+     *
      * @param $type
      *
      * @return mixed
@@ -44,9 +48,14 @@ class UnorderedArguments
     }
 
     /**
+     * Ask for an required argument by type then pop and return
+     * the first found from the list. If not found, throw an exception.
+     *
      * @param $type
      *
      * @return mixed
+     *
+     * @throws InvalidArgumentException
      */
     public function required($type)
     {
@@ -60,7 +69,9 @@ class UnorderedArguments
     }
 
     /**
+     * Throw an exception if all the arguments have not yet been taken.
      *
+     * @throws InvalidArgumentException
      */
     public function noMoreArguments()
     {
@@ -70,7 +81,10 @@ class UnorderedArguments
     }
 
     /**
+     * Throw an exception if all the arguments except null ones
+     * have not yet been taken.
      *
+     * @throws InvalidArgumentException
      */
     public function noMoreDefinedArguments()
     {
