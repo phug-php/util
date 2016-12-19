@@ -4,6 +4,13 @@ namespace Phug\Test\Util;
 
 use Phug\Util\UnorderedArguments;
 
+//@codingStandardsIgnoreStart
+interface Abc
+{
+}
+class Def implements Abc
+{
+}
 /**
  * Class UnorderedArgumentsTest
  * @package Phug\Test\Util
@@ -115,4 +122,18 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
         $arguments->noMoreDefinedArguments();
         $arguments->noMoreArguments();
     }
+
+    /**
+     * @covers ::optional
+     */
+    public function testInterfacesAsString()
+    {
+
+        $arguments = new UnorderedArguments([Def::class]);
+
+        $def = $arguments->optional(Abc::class);
+        
+        $this->assertSame(Def::class, $def);
+    }
 }
+//@codingStandardsIgnoreEnd
