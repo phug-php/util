@@ -39,7 +39,7 @@ class UnorderedArguments
     public function optional($type)
     {
         foreach ($this->arguments as $index => $argument) {
-            if (gettype($argument) === $type || is_a($argument, $type)) {
+            if (gettype($argument) === $type || is_a($argument, $type, true)) {
                 array_splice($this->arguments, $index, 1);
 
                 return $argument;
