@@ -38,4 +38,10 @@ interface OptionInterface
      * @return $this
      */
     public function setOption($name, $value);
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function unsetOption($name);
 }

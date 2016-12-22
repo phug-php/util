@@ -30,6 +30,28 @@ trait OptionTrait
     }
 
     /**
+     * @param array|string  $keys
+     * @param callable      $callback
+     *
+     * @return &$options
+     */
+    private function withOptionsReference(&$keys, $callback)
+    {
+        $options = &$this->options;
+        if (is_array($keys)) {
+            foreach (array_slice($keys, 0, -1) as $key) {
+                if (!array_key_exists($key, $options)) {
+                    $options[$key] = [];
+                }
+                $options = &$options[$key];
+            }
+            $keys = end($keys);
+        }
+
+        return $callback($options, $keys);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getOptions()
@@ -59,19 +81,36 @@ trait OptionTrait
     /**
      * {@inheritdoc}
      */
-    public function getOption($name)
+    public function getOption($keys)
     {
 
-        return $this->options[$name];
+        return $this->withOptionsReference($keys, function (&$options, $name) {
+            return $options[$name];
+        });
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOption($name, $value)
+    public function setOption($keys, $value)
     {
 
-        $this->options[$name] = $value;
+        $this->withOptionsReference($keys, function (&$options, $name) use ($value) {
+            $options[$name] = $value;
+        });
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unsetOption($keys)
+    {
+
+        $this->withOptionsReference($keys, function (&$options, $name) {
+            unset($options[$name]);
+        });
 
         return $this;
     }

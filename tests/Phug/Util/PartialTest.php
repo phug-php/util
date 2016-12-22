@@ -57,7 +57,7 @@ class TestClass implements OptionInterface, DocumentLocationInterface
  */
 class PartialTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * @covers Phug\Util\Partial\AssignmentTrait
      * @covers Phug\Util\Partial\AssignmentTrait::getAssignments
@@ -72,7 +72,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $inst->getAssignments()->attach($someObj);
 
         self::assertTrue($inst->getAssignments()->contains($someObj));
-        self::assertEquals(1, $inst->getAssignments()->count());
+        self::assertSame(1, $inst->getAssignments()->count());
     }
 
     /**
@@ -89,7 +89,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $inst->getAttributes()->attach($someObj);
 
         self::assertTrue($inst->getAttributes()->contains($someObj));
-        self::assertEquals(1, $inst->getAttributes()->count());
+        self::assertSame(1, $inst->getAttributes()->count());
     }
 
     /**
@@ -152,10 +152,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getOffset());
 
         $inst->setLine(15);
-        self::assertEquals(15, $inst->getLine(), 'getLine()');
+        self::assertSame(15, $inst->getLine(), 'getLine()');
 
         $inst->setOffset(23);
-        self::assertEquals(23, $inst->getOffset(), 'getOffset()');
+        self::assertSame(23, $inst->getOffset(), 'getOffset()');
     }
 
     /**
@@ -168,10 +168,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     {
 
         $inst = new TestClass;
-        self::assertEquals(0, $inst->getLevel());
+        self::assertSame(0, $inst->getLevel());
 
         $inst->setLevel(101);
-        self::assertEquals(101, $inst->getLevel());
+        self::assertSame(101, $inst->getLevel());
     }
 
     /**
@@ -212,7 +212,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getFilter());
 
         $inst->setFilter('test filter');
-        self::assertEquals('test filter', $inst->getFilter());
+        self::assertSame('test filter', $inst->getFilter());
     }
 
     /**
@@ -227,7 +227,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getMode());
 
         $inst->setMode('test mode');
-        self::assertEquals('test mode', $inst->getMode());
+        self::assertSame('test mode', $inst->getMode());
     }
 
     /**
@@ -242,7 +242,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getName());
 
         $inst->setName('test name');
-        self::assertEquals('test name', $inst->getName());
+        self::assertSame('test name', $inst->getName());
     }
 
     /**
@@ -260,10 +260,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getValue());
 
         $inst->setKey('test key');
-        self::assertEquals('test key', $inst->getKey());
+        self::assertSame('test key', $inst->getKey());
 
         $inst->setItem('test item');
-        self::assertEquals('test item', $inst->getItem());
+        self::assertSame('test item', $inst->getItem());
     }
 
     /**
@@ -278,7 +278,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getPath());
 
         $inst->setPath('test path');
-        self::assertEquals('test path', $inst->getPath());
+        self::assertSame('test path', $inst->getPath());
     }
 
     /**
@@ -293,7 +293,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getSubject());
 
         $inst->setSubject('test subject');
-        self::assertEquals('test subject', $inst->getSubject());
+        self::assertSame('test subject', $inst->getSubject());
     }
 
     /**
@@ -308,7 +308,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertNull($inst->getValue());
 
         $inst->setValue('test value');
-        self::assertEquals('test value', $inst->getValue());
+        self::assertSame('test value', $inst->getValue());
     }
 
     /**
@@ -340,11 +340,14 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phug\Util\OptionInterface
      * @covers Phug\Util\Partial\OptionTrait
+     * @covers Phug\Util\Partial\OptionTrait::setOptionArrays
+     * @covers Phug\Util\Partial\OptionTrait::withOptionsReference
      * @covers Phug\Util\Partial\OptionTrait::getOptions
      * @covers Phug\Util\Partial\OptionTrait::setOptions
      * @covers Phug\Util\Partial\OptionTrait::setOptionsRecursive
      * @covers Phug\Util\Partial\OptionTrait::getOption
      * @covers Phug\Util\Partial\OptionTrait::setOption
+     * @covers Phug\Util\Partial\OptionTrait::unsetOption
      */
     public function testOptionTraitAndInterface()
     {
@@ -384,25 +387,33 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         ];
 
         $inst->setOptions($options);
-        self::assertEquals($options, $inst->getOptions(), '$options === $inst->getOptions()');
-        self::assertEquals(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
+        self::assertSame($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
         $cloned->setOptions($flatOptions);
-        self::assertEquals(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
+        self::assertSame(2, $cloned->getOption('b'), '$cloned->getOption(b) === 2');
 
         $cloned->setOptions([], null, $anotherFlatOptions);
-        self::assertEquals(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
+        self::assertSame(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
 
         $inst->setOptionsRecursive($deepOptions);
-        self::assertEquals(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
+        self::assertSame(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOptionsRecursive([], $anotherDeepOptions);
-        self::assertEquals(5, $inst->getOption('b')['e'], '$inst->getOption(b)[e] === 5 (second argument)');
-        self::assertEquals(6, $inst->getOption('b')['f'], '$inst->getOption(b)[f] === 6 (second argument)');
+        self::assertSame(5, $inst->getOption('b')['e'], '$inst->getOption(b)[e] === 5 (second argument)');
+        self::assertSame(6, $inst->getOption('b')['f'], '$inst->getOption(b)[f] === 6 (second argument)');
 
         $inst->setOption('b', 5);
-        self::assertEquals(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
+        self::assertSame(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
+
+        $inst->setOption(['foo', 'bar'], 3);
+        $inst->setOption(['foo', 'baz'], 6);
+        self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        $inst->setOption(['foo', 'baz'], 8);
+        self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        $inst->unsetOption(['foo', 'baz']);
+        self::assertSame(['bar' => 3], $inst->getOption('foo'), '$inst->getOption(foo.bar) === 5');
     }
 }
 //@codingStandardsIgnoreEnd
