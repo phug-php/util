@@ -12,10 +12,11 @@ php:
     - hhvm
 
 install:
-    - php bin/check $TRAVIS_PHP_VERSION install
+    - composer self-update
+    - composer install
 
 script:
-    - php bin/check $TRAVIS_PHP_VERSION
+    - vendor/bin/phug-dev check --report
 
 notifications:
     slack: phug:nzXFnxhU14RWK2EQSDL0u08z

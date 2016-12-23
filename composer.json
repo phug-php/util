@@ -17,12 +17,12 @@
         "source": "https://github.com/phug-php/util",
         "docs": "http://phug-lang.com/docs"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.0"
     },
     "require-dev": {
-        "codeclimate/php-test-reporter": "dev-master"
+        "phug/dev-tool": "dev-master"
     },
     "autoload": {
         "psr-4": {
