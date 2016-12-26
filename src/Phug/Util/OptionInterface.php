@@ -27,20 +27,20 @@ interface OptionInterface
     public function setOptionsRecursive(array $options);
 
     /**
-     * @param string $name
+     * @param string|array $name
      * @return mixed
      */
     public function getOption($name);
 
     /**
-     * @param string $name
-     * @param mixed $value
+     * @param string|array $name
+     * @param mixed        $value
      * @return $this
      */
     public function setOption($name, $value);
 
     /**
-     * @param string $name
+     * @param string|array $name
      * @return $this
      */
     public function unsetOption($name);
