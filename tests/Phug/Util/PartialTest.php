@@ -5,6 +5,7 @@ namespace Phug\Test\Util;
 use Phug\Util\DocumentLocationInterface;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
+use Phug\Util\ScopeInterface;
 use stdClass;
 
 //@codingStandardsIgnoreStart
@@ -12,24 +13,25 @@ use stdClass;
  * Class TestClass
  * @package Phug\Test\Util
  */
-class TestClass implements OptionInterface, DocumentLocationInterface
+class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInterface
 {
     use Partial\AssignmentTrait;
     use Partial\AttributeTrait;
     use Partial\BlockTrait;
     use Partial\CheckTrait;
+    use Partial\DocumentLocationTrait;
     use Partial\EscapeTrait;
     use Partial\FilterTrait;
+    use Partial\LevelTrait;
     use Partial\ModeTrait;
     use Partial\NameTrait;
+    use Partial\OptionTrait;
     use Partial\PairTrait;
     use Partial\PathTrait;
+    use Partial\ScopeTrait;
     use Partial\SubjectTrait;
     use Partial\ValueTrait;
     use Partial\VisibleTrait;
-    use Partial\OptionTrait;
-    use Partial\DocumentLocationTrait;
-    use Partial\LevelTrait;
 
     /**
      * @param int $line
@@ -414,6 +416,26 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
         $inst->unsetOption(['foo', 'baz']);
         self::assertSame(['bar' => 3], $inst->getOption('foo'), '$inst->getOption(foo.bar) === 5');
+    }
+
+    /**
+     * @covers Phug\Util\ScopeInterface
+     * @covers Phug\Util\Partial\ScopeTrait
+     * @covers Phug\Util\Partial\ScopeTrait::setScope
+     * @covers Phug\Util\Partial\ScopeTrait::getScopeId
+     */
+    public function testScopeTrait()
+    {
+
+        $inst = new TestClass;
+        self::assertSame(null, $inst->getScopeId());
+
+        $foo = new stdClass;
+        $inst->setScope($foo);
+        self::assertSame(spl_object_hash($foo), $inst->getScopeId());
+
+        $inst->setScope(null);
+        self::assertSame(null, $inst->getScopeId());
     }
 }
 //@codingStandardsIgnoreEnd
