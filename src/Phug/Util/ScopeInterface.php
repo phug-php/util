@@ -3,14 +3,13 @@
 namespace Phug\Util;
 
 /**
- * Interface ScopeInterface
- * @package Phug\Util
+ * Interface ScopeInterface.
  */
 interface ScopeInterface
 {
-
     /**
      * @param object $object
+     *
      * @return $this
      */
     public function setOptions(array $options);

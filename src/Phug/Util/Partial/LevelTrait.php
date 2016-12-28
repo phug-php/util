@@ -3,8 +3,7 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class LevelTrait
- * @package Phug\Util\Partial
+ * Class LevelTrait.
  */
 trait LevelTrait
 {
@@ -12,11 +11,11 @@ trait LevelTrait
 
     /**
      * @param int $level
+     *
      * @return $this
      */
     public function setLevel($level)
     {
-
         $this->level = $level;
 
         return $this;

@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class PairTrait
- * @package Phug\Util\Partial
+ * Class PairTrait.
  */
 trait PairTrait
 {
-
     /**
      * @var string
      */
@@ -23,7 +21,6 @@ trait PairTrait
      */
     public function getItem()
     {
-
         return $this->item;
     }
 
@@ -34,7 +31,6 @@ trait PairTrait
      */
     public function setItem($itemName)
     {
-
         $this->item = $itemName;
 
         return $this;
@@ -45,7 +41,6 @@ trait PairTrait
      */
     public function getKey()
     {
-
         return $this->key;
     }
 
@@ -56,7 +51,6 @@ trait PairTrait
      */
     public function setKey($keyName)
     {
-
         $this->key = $keyName;
 
         return $this;

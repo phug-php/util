@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class OptionTrait
- * @package Phug\Util\Partial
+ * Class OptionTrait.
  */
 trait OptionTrait
 {
-
     /**
      * @var array
      */
@@ -22,7 +20,6 @@ trait OptionTrait
      */
     private function setOptionArrays(array $arrays, $functionName)
     {
-
         array_unshift($arrays, $this->options);
         $this->options = call_user_func_array($functionName, array_filter($arrays, 'is_array'));
 
@@ -30,8 +27,8 @@ trait OptionTrait
     }
 
     /**
-     * @param array|string  $keys
-     * @param callable      $callback
+     * @param array|string $keys
+     * @param callable     $callback
      *
      * @return &$options
      */
@@ -56,16 +53,14 @@ trait OptionTrait
      */
     public function getOptions()
     {
-
         return $this->options;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
-
         return $this->setOptionArrays(func_get_args(), 'array_replace');
     }
 
@@ -74,7 +69,6 @@ trait OptionTrait
      */
     public function setOptionsRecursive(array $options)
     {
-
         return $this->setOptionArrays(func_get_args(), 'array_replace_recursive');
     }
 
@@ -83,7 +77,6 @@ trait OptionTrait
      */
     public function getOption($keys)
     {
-
         return $this->withOptionsReference($keys, function (&$options, $name) {
             return $options[$name];
         });
@@ -94,7 +87,6 @@ trait OptionTrait
      */
     public function setOption($keys, $value)
     {
-
         $this->withOptionsReference($keys, function (&$options, $name) use ($value) {
             $options[$name] = $value;
         });
@@ -107,7 +99,6 @@ trait OptionTrait
      */
     public function unsetOption($keys)
     {
-
         $this->withOptionsReference($keys, function (&$options, $name) {
             unset($options[$name]);
         });
