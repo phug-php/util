@@ -3,12 +3,10 @@
 namespace Phug\Util;
 
 /**
- * Interface DocumentLocationInterface
- * @package Phug\Util
+ * Interface DocumentLocationInterface.
  */
 interface DocumentLocationInterface
 {
-
     /**
      * @return int
      */

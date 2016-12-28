@@ -3,8 +3,7 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class DocumentLocationTrait
- * @package Phug\Util\Partial
+ * Class DocumentLocationTrait.
  */
 trait DocumentLocationTrait
 {

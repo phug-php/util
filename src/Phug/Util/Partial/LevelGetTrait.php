@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class LevelGetTrait
- * @package Phug\Util\Partial
+ * Class LevelGetTrait.
  */
 trait LevelGetTrait
 {
-
     /**
      * @var int
      */
@@ -19,7 +17,6 @@ trait LevelGetTrait
      */
     public function getLevel()
     {
-
         return $this->level;
     }
 }

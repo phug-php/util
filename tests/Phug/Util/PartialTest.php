@@ -10,8 +10,7 @@ use stdClass;
 
 //@codingStandardsIgnoreStart
 /**
- * Class TestClass
- * @package Phug\Test\Util
+ * Class TestClass.
  */
 class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInterface
 {
@@ -38,7 +37,6 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
      */
     public function setLine($line)
     {
-
         $this->line = $line;
     }
 
@@ -47,27 +45,22 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
      */
     public function setOffset($offset)
     {
-
         $this->offset = $offset;
     }
 }
 
-
 /**
- * Class PartialTest
- * @package Phug\Test\Util
+ * Class PartialTest.
  */
 class PartialTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers Phug\Util\Partial\AssignmentTrait
      * @covers Phug\Util\Partial\AssignmentTrait::getAssignments
      */
     public function testAssignmentTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertInstanceOf(\SplObjectStorage::class, $inst->getAssignments());
 
         $someObj = new stdClass();
@@ -83,8 +76,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testAttributeTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertInstanceOf(\SplObjectStorage::class, $inst->getAttributes());
 
         $someObj = new stdClass();
@@ -101,8 +93,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testBlockTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertFalse($inst->isBlock(), 'after ctor');
 
         $inst->setIsBlock(true);
@@ -121,8 +112,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertTrue($inst->isChecked());
 
         $inst->setIsChecked(false);
@@ -148,8 +138,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocumentLocationTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getLine());
         self::assertNull($inst->getOffset());
 
@@ -168,8 +157,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testLevelTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertSame(0, $inst->getLevel());
 
         $inst->setLevel(101);
@@ -185,8 +173,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testEscapeTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertFalse($inst->isEscaped());
 
         $inst->setIsEscaped(true);
@@ -209,8 +196,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getFilter());
 
         $inst->setFilter('test filter');
@@ -224,8 +210,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testModeTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getMode());
 
         $inst->setMode('test mode');
@@ -239,8 +224,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getName());
 
         $inst->setName('test name');
@@ -256,8 +240,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testPairTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getKey());
         self::assertNull($inst->getValue());
 
@@ -275,8 +258,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testPathTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getPath());
 
         $inst->setPath('test path');
@@ -290,8 +272,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testSubjectTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getSubject());
 
         $inst->setSubject('test subject');
@@ -305,8 +286,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testValueTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertNull($inst->getValue());
 
         $inst->setValue('test value');
@@ -322,8 +302,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisibleTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertTrue($inst->isVisible());
 
         $inst->setIsVisible(false);
@@ -353,8 +332,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testOptionTraitAndInterface()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertInternalType('array', $inst->getOptions());
         self::assertCount(0, $inst->getOptions());
 
@@ -426,11 +404,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      */
     public function testScopeTrait()
     {
-
-        $inst = new TestClass;
+        $inst = new TestClass();
         self::assertSame(null, $inst->getScopeId());
 
-        $foo = new stdClass;
+        $foo = new stdClass();
         $inst->setScope($foo);
         self::assertSame(spl_object_hash($foo), $inst->getScopeId());
 
