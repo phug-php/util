@@ -12,20 +12,18 @@ class Def implements Abc
 {
 }
 /**
- * Class UnorderedArgumentsTest
- * @package Phug\Test\Util
+ * Class UnorderedArgumentsTest.
+ *
  * @coversDefaultClass Phug\Util\UnorderedArguments
  */
 class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers ::__construct
      * @covers ::optional
      */
     public function testOptional()
     {
-
         $arguments = new UnorderedArguments(['foo', 42]);
 
         self::assertSame(42, $arguments->optional('integer'));
@@ -38,7 +36,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequired()
     {
-
         $argument = new UnorderedArguments(['test']);
         $arguments = new UnorderedArguments(['foo', 42, $argument]);
 
@@ -54,7 +51,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequiredException()
     {
-
         $argument = new UnorderedArguments(['test']);
         $arguments = new UnorderedArguments(['foo', 42, $argument, []]);
 
@@ -66,7 +62,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreArguments()
     {
-
         $arguments = new UnorderedArguments(['foo']);
 
         $arguments->optional('string');
@@ -81,7 +76,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreArgumentsException()
     {
-
         $arguments = new UnorderedArguments(['foo', 'bar', 'biz', 42]);
 
         $arguments->optional('string');
@@ -97,7 +91,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreUndefinedArgumentsException()
     {
-
         $arguments = new UnorderedArguments(['foo', null, 'biz', null]);
 
         $arguments->optional('string');
@@ -114,7 +107,6 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoMoreDefinedArgumentsException()
     {
-
         $arguments = new UnorderedArguments(['foo', 'biz', 1, null]);
 
         $arguments->optional('string');
@@ -128,11 +120,10 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterfacesAsString()
     {
-
         $arguments = new UnorderedArguments([Def::class]);
 
         $def = $arguments->optional(Abc::class);
-        
+
         $this->assertSame(Def::class, $def);
     }
 }

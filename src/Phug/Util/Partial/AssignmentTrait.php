@@ -5,12 +5,10 @@ namespace Phug\Util\Partial;
 use SplObjectStorage;
 
 /**
- * Class AssignmentTrait
- * @package Phug\Util\Partial
+ * Class AssignmentTrait.
  */
 trait AssignmentTrait
 {
-
     /**
      * @var SplObjectStorage
      */
@@ -21,9 +19,8 @@ trait AssignmentTrait
      */
     public function getAssignments()
     {
-
         if (!$this->assignments) {
-            $this->assignments = new SplObjectStorage;
+            $this->assignments = new SplObjectStorage();
         }
 
         return $this->assignments;

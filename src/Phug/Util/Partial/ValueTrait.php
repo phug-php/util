@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class ValueTrait
- * @package Phug\Util\Partial
+ * Class ValueTrait.
  */
 trait ValueTrait
 {
-
     /**
      * @var mixed
      */
@@ -19,7 +17,6 @@ trait ValueTrait
      */
     public function getValue()
     {
-
         return $this->value;
     }
 
@@ -28,7 +25,6 @@ trait ValueTrait
      */
     public function setValue($value)
     {
-
         $this->value = $value;
     }
 }

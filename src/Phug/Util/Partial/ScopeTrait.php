@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class BlockTrait
- * @package Phug\Util\Partial
+ * Class BlockTrait.
  */
 trait ScopeTrait
 {
-
     /**
      * @var string
      */
@@ -19,7 +17,6 @@ trait ScopeTrait
      */
     public function setScope($object)
     {
-
         $this->scopeId = is_object($object) ? spl_object_hash($object) : null;
 
         return $this;
@@ -30,7 +27,6 @@ trait ScopeTrait
      */
     public function getScopeId()
     {
-
         return $this->scopeId;
     }
 }

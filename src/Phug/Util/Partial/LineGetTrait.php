@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class LineGetTrait
- * @package Phug\Util\Partial
+ * Class LineGetTrait.
  */
 trait LineGetTrait
 {
-
     /**
      * @var int
      */
@@ -19,7 +17,6 @@ trait LineGetTrait
      */
     public function getLine()
     {
-
         return $this->line;
     }
 }
