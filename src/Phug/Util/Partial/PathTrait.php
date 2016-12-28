@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class PathTrait
- * @package Phug\Util\Partial
+ * Class PathTrait.
  */
 trait PathTrait
 {
-
     /**
      * @var string
      */
@@ -19,7 +17,6 @@ trait PathTrait
      */
     public function getPath()
     {
-
         return $this->path;
     }
 
@@ -30,7 +27,6 @@ trait PathTrait
      */
     public function setPath($path)
     {
-
         $this->path = $path;
 
         return $this;

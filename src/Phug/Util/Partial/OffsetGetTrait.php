@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class OffsetGetTrait
- * @package Phug\Util\Partial
+ * Class OffsetGetTrait.
  */
 trait OffsetGetTrait
 {
-
     /**
      * @var int
      */
@@ -19,7 +17,6 @@ trait OffsetGetTrait
      */
     public function getOffset()
     {
-
         return $this->offset;
     }
 }

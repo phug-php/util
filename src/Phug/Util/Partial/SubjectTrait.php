@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class SubjectTrait
- * @package Phug\Util\Partial
+ * Class SubjectTrait.
  */
 trait SubjectTrait
 {
-
     /**
      * @var string
      */
@@ -19,17 +17,16 @@ trait SubjectTrait
      */
     public function getSubject()
     {
-
         return $this->subject;
     }
 
     /**
      * @param string $subject
+     *
      * @return $this
      */
     public function setSubject($subject)
     {
-
         $this->subject = $subject;
 
         return $this;

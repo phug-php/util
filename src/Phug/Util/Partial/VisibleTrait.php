@@ -3,12 +3,10 @@
 namespace Phug\Util\Partial;
 
 /**
- * Class VisibleTrait
- * @package Phug\Util\Partial
+ * Class VisibleTrait.
  */
 trait VisibleTrait
 {
-
     /**
      * @var bool
      */
@@ -19,17 +17,16 @@ trait VisibleTrait
      */
     public function isVisible()
     {
-
         return $this->visible;
     }
 
     /**
      * @param bool $visible
+     *
      * @return $this
      */
     public function setIsVisible($visible)
     {
-
         $this->visible = $visible;
 
         return $this;
@@ -40,7 +37,6 @@ trait VisibleTrait
      */
     public function show()
     {
-
         $this->visible = true;
 
         return $this;
@@ -51,7 +47,6 @@ trait VisibleTrait
      */
     public function hide()
     {
-
         $this->visible = false;
 
         return $this;

@@ -3,12 +3,10 @@
 namespace Phug\Util;
 
 /**
- * Interface OptionInterface
- * @package Phug\Util
+ * Interface OptionInterface.
  */
 interface OptionInterface
 {
-
     /**
      * @return array
      */
@@ -16,18 +14,21 @@ interface OptionInterface
 
     /**
      * @param array $options
+     *
      * @return $this
      */
     public function setOptions(array $options);
 
     /**
      * @param array $options
+     *
      * @return $this
      */
     public function setOptionsRecursive(array $options);
 
     /**
      * @param string|array $name
+     *
      * @return mixed
      */
     public function getOption($name);
@@ -35,12 +36,14 @@ interface OptionInterface
     /**
      * @param string|array $name
      * @param mixed        $value
+     *
      * @return $this
      */
     public function setOption($name, $value);
 
     /**
      * @param string|array $name
+     *
      * @return $this
      */
     public function unsetOption($name);

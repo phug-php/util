@@ -5,12 +5,10 @@ namespace Phug\Util\Partial;
 use SplObjectStorage;
 
 /**
- * Class AttributeTrait
- * @package Phug\Util\Partial
+ * Class AttributeTrait.
  */
 trait AttributeTrait
 {
-
     /**
      * @var SplObjectStorage
      */
@@ -21,9 +19,8 @@ trait AttributeTrait
      */
     public function getAttributes()
     {
-
         if (!$this->attributes) {
-            $this->attributes = new SplObjectStorage;
+            $this->attributes = new SplObjectStorage();
         }
 
         return $this->attributes;

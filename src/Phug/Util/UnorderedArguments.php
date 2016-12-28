@@ -5,13 +5,10 @@ namespace Phug\Util;
 use InvalidArgumentException;
 
 /**
- * Class UnorderedArguments
- *
- * @package Phug\Util
+ * Class UnorderedArguments.
  */
 class UnorderedArguments
 {
-
     /**
      * @var
      */
@@ -53,9 +50,9 @@ class UnorderedArguments
      *
      * @param $type
      *
-     * @return mixed
-     *
      * @throws InvalidArgumentException
+     *
+     * @return mixed
      */
     public function required($type)
     {
