@@ -21,12 +21,13 @@ trait ValueTrait
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasStaticValue()
     {
         if (is_string($this->value)) {
             $tokens = token_get_all('<?php '.$this->value);
+
             return
                 count($tokens) === 2 &&
                 is_array($tokens[1]) &&
