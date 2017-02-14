@@ -291,6 +291,17 @@ class PartialTest extends \PHPUnit_Framework_TestCase
 
         $inst->setValue('test value');
         self::assertSame('test value', $inst->getValue());
+
+        self::assertFalse($inst->hasStaticValue());
+        $inst->setValue('$foo');
+        self::assertFalse($inst->hasStaticValue());
+        $inst->setValue([]);
+        self::assertFalse($inst->hasStaticValue());
+
+        $inst->setValue('0x54');
+        self::assertTrue($inst->hasStaticValue());
+        $inst->setValue('"foo"');
+        self::assertTrue($inst->hasStaticValue());
     }
 
     /**
