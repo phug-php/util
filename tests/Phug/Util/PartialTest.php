@@ -55,8 +55,8 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
 class PartialTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Phug\Util\Partial\AssignmentTrait
-     * @covers Phug\Util\Partial\AssignmentTrait::getAssignments
+     * @covers \Phug\Util\Partial\AssignmentTrait
+     * @covers \Phug\Util\Partial\AssignmentTrait::getAssignments
      */
     public function testAssignmentTrait()
     {
@@ -71,8 +71,8 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\AttributeTrait
-     * @covers Phug\Util\Partial\AttributeTrait::getAttributes
+     * @covers \Phug\Util\Partial\AttributeTrait
+     * @covers \Phug\Util\Partial\AttributeTrait::getAttributes
      */
     public function testAttributeTrait()
     {
@@ -87,9 +87,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\BlockTrait
-     * @covers Phug\Util\Partial\BlockTrait::isBlock
-     * @covers Phug\Util\Partial\BlockTrait::setIsBlock
+     * @covers \Phug\Util\Partial\BlockTrait
+     * @covers \Phug\Util\Partial\BlockTrait::isBlock
+     * @covers \Phug\Util\Partial\BlockTrait::setIsBlock
      */
     public function testBlockTrait()
     {
@@ -104,11 +104,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\CheckTrait
-     * @covers Phug\Util\Partial\CheckTrait::isChecked
-     * @covers Phug\Util\Partial\CheckTrait::setIsChecked
-     * @covers Phug\Util\Partial\CheckTrait::check
-     * @covers Phug\Util\Partial\CheckTrait::uncheck
+     * @covers \Phug\Util\Partial\CheckTrait
+     * @covers \Phug\Util\Partial\CheckTrait::isChecked
+     * @covers \Phug\Util\Partial\CheckTrait::setIsChecked
+     * @covers \Phug\Util\Partial\CheckTrait::check
+     * @covers \Phug\Util\Partial\CheckTrait::uncheck
      */
     public function testCheckTrait()
     {
@@ -129,12 +129,12 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\DocumentLocationInterface
-     * @covers Phug\Util\Partial\DocumentLocationTrait
-     * @covers Phug\Util\Partial\LineGetTrait
-     * @covers Phug\Util\Partial\LineGetTrait::getLine
-     * @covers Phug\Util\Partial\OffsetGetTrait
-     * @covers Phug\Util\Partial\OffsetGetTrait::getOffset
+     * @covers \Phug\Util\DocumentLocationInterface
+     * @covers \Phug\Util\Partial\DocumentLocationTrait
+     * @covers \Phug\Util\Partial\LineGetTrait
+     * @covers \Phug\Util\Partial\LineGetTrait::getLine
+     * @covers \Phug\Util\Partial\OffsetGetTrait
+     * @covers \Phug\Util\Partial\OffsetGetTrait::getOffset
      */
     public function testDocumentLocationTrait()
     {
@@ -150,10 +150,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\LevelTrait
-     * @covers Phug\Util\Partial\LevelTrait::setLevel
-     * @covers Phug\Util\Partial\LevelGetTrait
-     * @covers Phug\Util\Partial\LevelGetTrait::getLevel
+     * @covers \Phug\Util\Partial\LevelTrait
+     * @covers \Phug\Util\Partial\LevelTrait::setLevel
+     * @covers \Phug\Util\Partial\LevelGetTrait
+     * @covers \Phug\Util\Partial\LevelGetTrait::getLevel
      */
     public function testLevelTrait()
     {
@@ -165,11 +165,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\EscapeTrait
-     * @covers Phug\Util\Partial\EscapeTrait::isEscaped
-     * @covers Phug\Util\Partial\EscapeTrait::setIsEscaped
-     * @covers Phug\Util\Partial\EscapeTrait::escape
-     * @covers Phug\Util\Partial\EscapeTrait::unescape
+     * @covers \Phug\Util\Partial\EscapeTrait
+     * @covers \Phug\Util\Partial\EscapeTrait::isEscaped
+     * @covers \Phug\Util\Partial\EscapeTrait::setIsEscaped
+     * @covers \Phug\Util\Partial\EscapeTrait::escape
+     * @covers \Phug\Util\Partial\EscapeTrait::unescape
      */
     public function testEscapeTrait()
     {
@@ -190,9 +190,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\FilterTrait
-     * @covers Phug\Util\Partial\FilterTrait::setFilter
-     * @covers Phug\Util\Partial\FilterTrait::getFilter
+     * @covers \Phug\Util\Partial\FilterTrait
+     * @covers \Phug\Util\Partial\FilterTrait::setFilter
+     * @covers \Phug\Util\Partial\FilterTrait::getFilter
      */
     public function testFilterTrait()
     {
@@ -204,9 +204,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\ModeTrait
-     * @covers Phug\Util\Partial\ModeTrait::setMode
-     * @covers Phug\Util\Partial\ModeTrait::getMode
+     * @covers \Phug\Util\Partial\ModeTrait
+     * @covers \Phug\Util\Partial\ModeTrait::setMode
+     * @covers \Phug\Util\Partial\ModeTrait::getMode
      */
     public function testModeTrait()
     {
@@ -218,9 +218,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\NameTrait
-     * @covers Phug\Util\Partial\NameTrait::setName
-     * @covers Phug\Util\Partial\NameTrait::getName
+     * @covers \Phug\Util\Partial\NameTrait
+     * @covers \Phug\Util\Partial\NameTrait::setName
+     * @covers \Phug\Util\Partial\NameTrait::getName
      */
     public function testNameTrait()
     {
@@ -232,11 +232,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\PairTrait
-     * @covers Phug\Util\Partial\PairTrait::setKey
-     * @covers Phug\Util\Partial\PairTrait::getKey
-     * @covers Phug\Util\Partial\PairTrait::setItem
-     * @covers Phug\Util\Partial\PairTrait::getItem
+     * @covers \Phug\Util\Partial\PairTrait
+     * @covers \Phug\Util\Partial\PairTrait::setKey
+     * @covers \Phug\Util\Partial\PairTrait::getKey
+     * @covers \Phug\Util\Partial\PairTrait::setItem
+     * @covers \Phug\Util\Partial\PairTrait::getItem
      */
     public function testPairTrait()
     {
@@ -252,9 +252,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\PathTrait
-     * @covers Phug\Util\Partial\PathTrait::setPath
-     * @covers Phug\Util\Partial\PathTrait::getPath
+     * @covers \Phug\Util\Partial\PathTrait
+     * @covers \Phug\Util\Partial\PathTrait::setPath
+     * @covers \Phug\Util\Partial\PathTrait::getPath
      */
     public function testPathTrait()
     {
@@ -266,9 +266,9 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\SubjectTrait
-     * @covers Phug\Util\Partial\SubjectTrait::setSubject
-     * @covers Phug\Util\Partial\SubjectTrait::getSubject
+     * @covers \Phug\Util\Partial\SubjectTrait
+     * @covers \Phug\Util\Partial\SubjectTrait::setSubject
+     * @covers \Phug\Util\Partial\SubjectTrait::getSubject
      */
     public function testSubjectTrait()
     {
@@ -280,9 +280,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\Partial\ValueTrait
-     * @covers Phug\Util\Partial\ValueTrait::setValue
-     * @covers Phug\Util\Partial\ValueTrait::getValue
+     * @covers \Phug\Util\Partial\ValueTrait
+     * @covers \Phug\Util\Partial\ValueTrait::setValue
+     * @covers \Phug\Util\Partial\ValueTrait::getValue
+     * @covers \Phug\Util\Partial\StaticMemberTrait
+     * @covers \Phug\Util\Partial\StaticMemberTrait::hasStaticMember
      */
     public function testValueTrait()
     {
@@ -302,14 +304,19 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($inst->hasStaticValue());
         $inst->setValue('"foo"');
         self::assertTrue($inst->hasStaticValue());
+
+        $inst->setName('"foo"');
+        self::assertTrue($inst->hasStaticMember('name'));
+        $inst->setName('"$foo"');
+        self::assertFalse($inst->hasStaticMember('name'));
     }
 
     /**
-     * @covers Phug\Util\Partial\VisibleTrait
-     * @covers Phug\Util\Partial\VisibleTrait::isVisible
-     * @covers Phug\Util\Partial\VisibleTrait::setIsVisible
-     * @covers Phug\Util\Partial\VisibleTrait::hide
-     * @covers Phug\Util\Partial\VisibleTrait::show
+     * @covers \Phug\Util\Partial\VisibleTrait
+     * @covers \Phug\Util\Partial\VisibleTrait::isVisible
+     * @covers \Phug\Util\Partial\VisibleTrait::setIsVisible
+     * @covers \Phug\Util\Partial\VisibleTrait::hide
+     * @covers \Phug\Util\Partial\VisibleTrait::show
      */
     public function testVisibleTrait()
     {
@@ -330,16 +337,16 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\OptionInterface
-     * @covers Phug\Util\Partial\OptionTrait
-     * @covers Phug\Util\Partial\OptionTrait::setOptionArrays
-     * @covers Phug\Util\Partial\OptionTrait::withOptionsReference
-     * @covers Phug\Util\Partial\OptionTrait::getOptions
-     * @covers Phug\Util\Partial\OptionTrait::setOptions
-     * @covers Phug\Util\Partial\OptionTrait::setOptionsRecursive
-     * @covers Phug\Util\Partial\OptionTrait::getOption
-     * @covers Phug\Util\Partial\OptionTrait::setOption
-     * @covers Phug\Util\Partial\OptionTrait::unsetOption
+     * @covers \Phug\Util\OptionInterface
+     * @covers \Phug\Util\Partial\OptionTrait
+     * @covers \Phug\Util\Partial\OptionTrait::setOptionArrays
+     * @covers \Phug\Util\Partial\OptionTrait::withOptionsReference
+     * @covers \Phug\Util\Partial\OptionTrait::getOptions
+     * @covers \Phug\Util\Partial\OptionTrait::setOptions
+     * @covers \Phug\Util\Partial\OptionTrait::setOptionsRecursive
+     * @covers \Phug\Util\Partial\OptionTrait::getOption
+     * @covers \Phug\Util\Partial\OptionTrait::setOption
+     * @covers \Phug\Util\Partial\OptionTrait::unsetOption
      */
     public function testOptionTraitAndInterface()
     {
@@ -408,10 +415,10 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phug\Util\ScopeInterface
-     * @covers Phug\Util\Partial\ScopeTrait
-     * @covers Phug\Util\Partial\ScopeTrait::setScope
-     * @covers Phug\Util\Partial\ScopeTrait::getScopeId
+     * @covers \Phug\Util\ScopeInterface
+     * @covers \Phug\Util\Partial\ScopeTrait
+     * @covers \Phug\Util\Partial\ScopeTrait::setScope
+     * @covers \Phug\Util\Partial\ScopeTrait::getScopeId
      */
     public function testScopeTrait()
     {
