@@ -66,15 +66,15 @@ class AssociativeStorage extends SplObjectStorage
     public function __construct($name = 'entity', $mode = self::STRICT, $identify = 'getName')
     {
         $this->name = $name;
-        $this->mode = $mode;
         $this->identify = $identify;
-
         $this->modes = [
             self::STRICT  => [$this, 'attachStrictMode'],
             self::REPLACE => [$this, 'attachReplaceMode'],
             self::IGNORE  => [$this, 'attachIgnoreMode'],
             self::ALL     => [$this, 'attachAllMode'],
         ];
+
+        $this->setMode($mode);
     }
 
     public function setMode($mode)
