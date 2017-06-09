@@ -45,11 +45,17 @@ class TestModuleTerClass extends TestModuleBisClass
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \Phug\Util\Partial\ModuleTrait
-     * @covers \Phug\Util\Partial\ModuleTrait::<public>
-     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
      * @covers \Phug\Util\AbstractModule
      * @covers \Phug\Util\AbstractModule::<public>
+     * @covers \Phug\Util\Partial\ModuleTrait
+     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers \Phug\Util\Partial\ModuleTrait::getExpectedModuleType
+     * @covers \Phug\Util\Partial\ModuleTrait::setExpectedModuleType
+     * @covers \Phug\Util\Partial\ModuleTrait::addModule
+     * @covers \Phug\Util\Partial\ModuleTrait::addModules
+     * @covers \Phug\Util\Partial\ModuleTrait::hasModule
+     * @covers \Phug\Util\Partial\ModuleTrait::getModule
+     * @covers \Phug\Util\Partial\ModuleTrait::removeModule
      */
     public function testModule()
     {
@@ -78,10 +84,11 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Phug\Util\Partial\ModuleTrait
-     * @covers \Phug\Util\Partial\ModuleTrait::<public>
      * @covers \Phug\Util\AbstractModule
      * @covers \Phug\Util\AbstractModule::<public>
+     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers \Phug\Util\Partial\ModuleTrait::addModule
+     * @covers \Phug\Util\Partial\ModuleTrait::removeModule
      */
     public function testModuleEvents()
     {
@@ -108,11 +115,10 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \Phug\Util\Partial\ModuleTrait
-     * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
-     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
      * @covers                   \Phug\Util\AbstractModule
      * @covers                   \Phug\Util\AbstractModule::<public>
+     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers                   \Phug\Util\Partial\ModuleTrait::addModule
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Phug\Util\Partial\ModuleTrait must be used with Phug\Util\ModulesContainerInterface
      */
@@ -123,11 +129,10 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \Phug\Util\Partial\ModuleTrait
-     * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
-     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
      * @covers                   \Phug\Util\AbstractModule
      * @covers                   \Phug\Util\AbstractModule::<public>
+     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers                   \Phug\Util\Partial\ModuleTrait::addModule
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Passed module needs to implement Phug\Util\ModuleInterface. stdClass given.
      */
