@@ -17,6 +17,11 @@ class TestParentClass implements ModulesContainerInterface
     use ModuleTrait;
 }
 
+class TestParentBisClass implements ModulesContainerInterface
+{
+    use ModuleTrait;
+}
+
 class TestNoInterfacedParentClass
 {
     use ModuleTrait;
@@ -70,6 +75,36 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
         self::assertSame($parent, $parent->addModules([TestModuleBisClass::class, TestModuleTerClass::class]));
         self::assertTrue($parent->hasModule(TestModuleBisClass::class));
         self::assertTrue($parent->hasModule(TestModuleTerClass::class));
+    }
+
+    /**
+     * @covers \Phug\Util\Partial\ModuleTrait
+     * @covers \Phug\Util\Partial\ModuleTrait::<public>
+     * @covers \Phug\Util\AbstractModule
+     * @covers \Phug\Util\AbstractModule::<public>
+     */
+    public function testModuleEvents()
+    {
+        $count = 0;
+        $module = new TestModuleClass();
+        $offPlug = $module->onPlug(function (ModulesContainerInterface $container) use (&$count) {
+            $count++;
+        });
+        $offUnplug = $module->onUnplug(function (ModulesContainerInterface $container) use (&$count) {
+            $count += 2;
+        });
+        $parent1 = new TestParentClass();
+        $parent1->addModule($module);
+        self::assertSame(1, $count);
+        $parent1->removeModule($module);
+        self::assertSame(3, $count);
+        $offPlug();
+        $offUnplug();
+        $parent2 = new TestParentBisClass();
+        $parent2->addModule($module);
+        self::assertSame(3, $count);
+        $parent2->removeModule($module);
+        self::assertSame(3, $count);
     }
 
     /**

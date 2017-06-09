@@ -11,6 +11,10 @@ interface ModuleInterface
 
     public function unplug();
 
+    public function onPlug(callable $handler);
+
+    public function onUnplug(callable $handler);
+
     public function isPlugged();
 
     public function getParent();
