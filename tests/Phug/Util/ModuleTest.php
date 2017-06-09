@@ -40,7 +40,9 @@ class TestModuleTerClass extends TestModuleBisClass
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @covers \Phug\Util\AbstractModule
      * @covers \Phug\Util\AbstractModule::<public>
+     * @covers \Phug\Util\Partial\ModuleTrait
      * @covers \Phug\Util\Partial\ModuleTrait::<public>
      * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
      */
@@ -71,7 +73,9 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers                   \Phug\Util\AbstractModule
      * @covers                   \Phug\Util\AbstractModule::<public>
+     * @covers                   \Phug\Util\Partial\ModuleTrait
      * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
      * @expectedException        \InvalidArgumentException
@@ -84,7 +88,9 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers                   \Phug\Util\AbstractModule
      * @covers                   \Phug\Util\AbstractModule::<public>
+     * @covers                   \Phug\Util\Partial\ModuleTrait
      * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
      * @expectedException        \InvalidArgumentException
