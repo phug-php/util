@@ -5,7 +5,7 @@ namespace Phug\Test\Util;
 use Phug\Util\AbstractModule;
 use Phug\Util\ModuleInterface;
 use Phug\Util\ModulesContainerInterface;
-use Phug\Util\Partial;
+use Phug\Util\Partial\ModuleTrait;
 use stdClass;
 
 //@codingStandardsIgnoreStart
@@ -14,12 +14,12 @@ use stdClass;
  */
 class TestParentClass implements ModulesContainerInterface
 {
-    use Partial\ModuleTrait;
+    use ModuleTrait;
 }
 
 class TestNoInterfacedParentClass
 {
-    use Partial\ModuleTrait;
+    use ModuleTrait;
 }
 
 class TestModuleClass extends AbstractModule
