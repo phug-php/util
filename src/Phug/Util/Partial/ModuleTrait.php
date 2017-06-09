@@ -47,7 +47,7 @@ trait ModuleTrait
 
     /**
      * @param ModuleInterface|string
-
+     *
      * @return $this
      */
     public function setExpectedModuleType($expectedModuleType)
