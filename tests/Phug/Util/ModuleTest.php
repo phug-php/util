@@ -40,11 +40,11 @@ class TestModuleTerClass extends TestModuleBisClass
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \Phug\Util\AbstractModule
-     * @covers \Phug\Util\AbstractModule::<public>
      * @covers \Phug\Util\Partial\ModuleTrait
      * @covers \Phug\Util\Partial\ModuleTrait::<public>
      * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers \Phug\Util\AbstractModule
+     * @covers \Phug\Util\AbstractModule::<public>
      */
     public function testModule()
     {
@@ -73,11 +73,11 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \Phug\Util\AbstractModule
-     * @covers                   \Phug\Util\AbstractModule::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait
      * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers                   \Phug\Util\AbstractModule
+     * @covers                   \Phug\Util\AbstractModule::<public>
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Phug\Util\Partial\ModuleTrait must be used with Phug\Util\ModulesContainerInterface
      */
@@ -88,11 +88,11 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \Phug\Util\AbstractModule
-     * @covers                   \Phug\Util\AbstractModule::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait
      * @covers                   \Phug\Util\Partial\ModuleTrait::<public>
      * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
+     * @covers                   \Phug\Util\AbstractModule
+     * @covers                   \Phug\Util\AbstractModule::<public>
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Passed module needs to implement Phug\Util\ModuleInterface. stdClass given.
      */
