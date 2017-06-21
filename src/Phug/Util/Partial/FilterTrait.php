@@ -8,12 +8,12 @@ namespace Phug\Util\Partial;
 trait FilterTrait
 {
     /**
-     * @var string
+     * @var mixed
      */
     private $filter = null;
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getFilter()
     {
@@ -21,7 +21,7 @@ trait FilterTrait
     }
 
     /**
-     * @param string $filter
+     * @param mixed $filter
      *
      * @return $this
      */
