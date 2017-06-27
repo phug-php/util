@@ -27,6 +27,7 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
     use Partial\OptionTrait;
     use Partial\PairTrait;
     use Partial\PathTrait;
+    use Partial\RestTrait;
     use Partial\ScopeTrait;
     use Partial\SubjectTrait;
     use Partial\ValueTrait;
@@ -126,6 +127,23 @@ class PartialTest extends \PHPUnit_Framework_TestCase
 
         $inst->check();
         self::assertTrue($inst->isChecked(), 'check');
+    }
+
+    /**
+     * @covers \Phug\Util\Partial\RestTrait
+     * @covers \Phug\Util\Partial\RestTrait::isRest
+     * @covers \Phug\Util\Partial\RestTrait::setIsRest
+     */
+    public function testRestTrait()
+    {
+        $inst = new TestClass();
+        self::assertFalse($inst->isRest());
+
+        $inst->setIsRest(true);
+        self::assertTrue($inst->isRest(), 'setIsRest(true)');
+
+        $inst->setIsRest(false);
+        self::assertFalse($inst->isRest(), 'setIsRest(false)');
     }
 
     /**
