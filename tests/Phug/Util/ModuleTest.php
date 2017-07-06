@@ -3,28 +3,28 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\AbstractModule;
+use Phug\Util\ModuleContainerInterface;
 use Phug\Util\ModuleInterface;
-use Phug\Util\ModulesContainerInterface;
-use Phug\Util\Partial\ModuleTrait;
+use Phug\Util\Partial\ModuleContainerTrait;
 use stdClass;
 
 //@codingStandardsIgnoreStart
 /**
  * Class TestModuleClass.
  */
-class TestParentClass implements ModulesContainerInterface
+class TestParentClass implements ModuleContainerInterface
 {
-    use ModuleTrait;
+    use ModuleContainerTrait;
 }
 
-class TestParentBisClass implements ModulesContainerInterface
+class TestParentBisClass implements ModuleContainerInterface
 {
-    use ModuleTrait;
+    use ModuleContainerTrait;
 }
 
 class TestNoInterfacedParentClass
 {
-    use ModuleTrait;
+    use ModuleContainerTrait;
 }
 
 class TestModuleClass extends AbstractModule
@@ -47,40 +47,29 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Phug\Util\AbstractModule
      * @covers \Phug\Util\AbstractModule::<public>
-     * @covers \Phug\Util\Partial\ModuleTrait
-     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
-     * @covers \Phug\Util\Partial\ModuleTrait::getExpectedModuleType
-     * @covers \Phug\Util\Partial\ModuleTrait::setExpectedModuleType
-     * @covers \Phug\Util\Partial\ModuleTrait::addModule
-     * @covers \Phug\Util\Partial\ModuleTrait::addModules
-     * @covers \Phug\Util\Partial\ModuleTrait::hasModule
-     * @covers \Phug\Util\Partial\ModuleTrait::getModule
-     * @covers \Phug\Util\Partial\ModuleTrait::removeModule
+     * @covers \Phug\Util\Partial\ModuleContainerTrait
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::getModuleBaseClassName
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::addModule
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::addModules
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::hasModule
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::getModule
+     * @covers \Phug\Util\Partial\ModuleContainerTrait::removeModule
      */
     public function testModule()
     {
-        $parent = new TestParentClass();
-        self::assertFalse($parent->hasModule(TestModuleClass::class));
-        self::assertSame(null, $parent->getModule(TestModuleClass::class));
-        self::assertSame($parent, $parent->addModule(TestModuleClass::class));
-        self::assertTrue($parent->hasModule(TestModuleClass::class));
-        $module1 = $parent->getModule(TestModuleClass::class);
-        $module2 = new TestModuleClass();
-        self::assertSame($parent, $parent->addModule($module2));
-        self::assertTrue($parent->hasModule($module2));
+        $container = new TestParentClass();
+        self::assertFalse($container->hasModule(TestModuleClass::class));
+        self::assertSame(null, $container->getModule(TestModuleClass::class));
+        self::assertSame($container, $container->addModule(TestModuleClass::class));
+        self::assertTrue($container->hasModule(TestModuleClass::class));
+        $module1 = $container->getModule(TestModuleClass::class);
         self::assertInstanceOf(TestModuleClass::class, $module1);
-        self::assertTrue($module1->isPlugged());
-        self::assertSame($parent, $parent->removeModule(TestModuleClass::class));
-        self::assertTrue($parent->hasModule($module2));
-        self::assertSame($parent, $module2->getParent());
-        self::assertFalse($parent->hasModule(TestModuleClass::class));
-        self::assertFalse($module1->isPlugged());
-        self::assertSame(ModuleInterface::class, $parent->getExpectedModuleType());
-        self::assertSame($parent, $parent->setExpectedModuleType(TestModuleBisClass::class));
-        self::assertSame(TestModuleBisClass::class, $parent->getExpectedModuleType());
-        self::assertSame($parent, $parent->addModules([TestModuleBisClass::class, TestModuleTerClass::class]));
-        self::assertTrue($parent->hasModule(TestModuleBisClass::class));
-        self::assertTrue($parent->hasModule(TestModuleTerClass::class));
+        self::assertSame($container, $container->removeModule(TestModuleClass::class));
+        self::assertFalse($container->hasModule(TestModuleClass::class));
+        self::assertSame(ModuleInterface::class, $container->getModuleBaseClassName());
+        self::assertSame($container, $container->addModules([TestModuleBisClass::class, TestModuleTerClass::class]));
+        self::assertTrue($container->hasModule(TestModuleBisClass::class));
+        self::assertTrue($container->hasModule(TestModuleTerClass::class));
     }
 
     /**

@@ -5,17 +5,12 @@ namespace Phug\Util;
 /**
  * Interface ModuleInterface.
  */
-interface ModuleInterface
+interface ModuleInterface extends OptionInterface
 {
-    public function plug(ModulesContainerInterface $parent);
 
-    public function unplug();
+    public function __construct(ModuleContainerInterface $container);
 
-    public function onPlug(callable $handler);
-
-    public function onUnplug(callable $handler);
-
-    public function isPlugged();
-
-    public function getParent();
+    public function getContainer();
+    public function attachEvents();
+    public function detachEvents();
 }
