@@ -2,111 +2,46 @@
 
 namespace Phug\Util;
 
+use Phug\Util\Partial\OptionTrait;
+
 /**
  * Abstract class AbstractModule.
  */
 abstract class AbstractModule implements ModuleInterface
 {
-    /**
-     * @var ModulesContainerInterface
-     */
-    private $parent;
+    use OptionTrait;
 
-    /**
-     * @var bool
-     */
-    private $plugged = false;
+    private $container;
 
-    /**
-     * @var array[callable]
-     */
-    private $plugCallback = [];
-
-    /**
-     * @var array[callable]
-     */
-    private $unplugCallback = [];
-
-    /**
-     * Hook triggered when plugged to the parent with ->addModule.
-     *
-     * @param ModulesContainerInterface $parent
-     *
-     * @return $this
-     */
-    public function plug(ModulesContainerInterface $parent)
+    public function __construct(ModuleContainerInterface $container)
     {
-        $this->parent = $parent;
-        $this->plugged = true;
+        $this->container = $container;
+    }
 
-        foreach ($this->plugCallback as $callback) {
-            $callback($parent);
+    /**
+     * @return ModuleContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    public function getEventListeners()
+    {
+        return [];
+    }
+
+    public function attachEvents()
+    {
+        foreach ($this->getEventListeners() as $event => $listener) {
+            $this->container->attach($event, $listener);
         }
     }
 
-    /**
-     * Hook triggered when unplugged to the parent with ->removeModule.
-     *
-     * @return $this
-     */
-    public function unplug()
+    public function detachEvents()
     {
-        $this->plugged = false;
-
-        foreach ($this->unplugCallback as $callback) {
-            $callback($this->parent);
+        foreach ($this->getEventListeners() as $event => $listener) {
+            $this->container->detach($event, $listener);
         }
-    }
-
-    /**
-     * Add a listener on plug event.
-     *
-     * @param callable $handler
-     *
-     * @return callable remove listener callback
-     */
-    public function onPlug(callable $handler)
-    {
-        $this->plugCallback[] = $handler;
-
-        return function () use ($handler) {
-            $this->plugCallback = array_filter($this->plugCallback, function ($callback) use ($handler) {
-                return $callback !== $handler;
-            });
-        };
-    }
-
-    /**
-     * Add a listener on unplug event.
-     *
-     * @param callable $handler
-     *
-     * @return callable remove listener callback
-     */
-    public function onUnplug(callable $handler)
-    {
-        $this->unplugCallback[] = $handler;
-
-        return function () use ($handler) {
-            $this->unplugCallback = array_filter($this->unplugCallback, function ($callback) use ($handler) {
-                return $callback !== $handler;
-            });
-        };
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPlugged()
-    {
-        return $this->plugged;
-    }
-
-    /**
-     * @return ModulesContainerInterface
-     */
-    public function getParent()
-    {
-        return $this->parent;
     }
 }

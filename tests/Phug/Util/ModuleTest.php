@@ -2,145 +2,87 @@
 
 namespace Phug\Test\Util;
 
-use Phug\Util\AbstractModule;
-use Phug\Util\ModuleInterface;
-use Phug\Util\ModulesContainerInterface;
-use Phug\Util\Partial\ModuleTrait;
-use stdClass;
-
 //@codingStandardsIgnoreStart
-/**
- * Class TestModuleClass.
- */
-class TestParentClass implements ModulesContainerInterface
-{
-    use ModuleTrait;
-}
-
-class TestParentBisClass implements ModulesContainerInterface
-{
-    use ModuleTrait;
-}
-
-class TestNoInterfacedParentClass
-{
-    use ModuleTrait;
-}
-
-class TestModuleClass extends AbstractModule
-{
-}
-
-class TestModuleBisClass extends AbstractModule
-{
-}
-
-class TestModuleTerClass extends TestModuleBisClass
-{
-}
 
 /**
- * Class ModuleTest.
+ * @coversDefaultClass Phug\Util\AbstractModule
  */
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \Phug\Util\AbstractModule
-     * @covers \Phug\Util\AbstractModule::<public>
-     * @covers \Phug\Util\Partial\ModuleTrait
-     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
-     * @covers \Phug\Util\Partial\ModuleTrait::getExpectedModuleType
-     * @covers \Phug\Util\Partial\ModuleTrait::setExpectedModuleType
-     * @covers \Phug\Util\Partial\ModuleTrait::addModule
-     * @covers \Phug\Util\Partial\ModuleTrait::addModules
-     * @covers \Phug\Util\Partial\ModuleTrait::hasModule
-     * @covers \Phug\Util\Partial\ModuleTrait::getModule
-     * @covers \Phug\Util\Partial\ModuleTrait::removeModule
+     * @covers ::__construct
+     * @covers ::getContainer
+     * @covers ::getEventListeners
+     * @covers ::attachEvents
+     * @covers ::detachEvents
      */
-    public function testModule()
+    public function testManualModuleInstanciation()
     {
-        $parent = new TestParentClass();
-        self::assertFalse($parent->hasModule(TestModuleClass::class));
-        self::assertSame(null, $parent->getModule(TestModuleClass::class));
-        self::assertSame($parent, $parent->addModule(TestModuleClass::class));
-        self::assertTrue($parent->hasModule(TestModuleClass::class));
-        $module1 = $parent->getModule(TestModuleClass::class);
-        $module2 = new TestModuleClass();
-        self::assertSame($parent, $parent->addModule($module2));
-        self::assertTrue($parent->hasModule($module2));
-        self::assertInstanceOf(TestModuleClass::class, $module1);
-        self::assertTrue($module1->isPlugged());
-        self::assertSame($parent, $parent->removeModule(TestModuleClass::class));
-        self::assertTrue($parent->hasModule($module2));
-        self::assertSame($parent, $module2->getParent());
-        self::assertFalse($parent->hasModule(TestModuleClass::class));
-        self::assertFalse($module1->isPlugged());
-        self::assertSame(ModuleInterface::class, $parent->getExpectedModuleType());
-        self::assertSame($parent, $parent->setExpectedModuleType(TestModuleBisClass::class));
-        self::assertSame(TestModuleBisClass::class, $parent->getExpectedModuleType());
-        self::assertSame($parent, $parent->addModules([TestModuleBisClass::class, TestModuleTerClass::class]));
-        self::assertTrue($parent->hasModule(TestModuleBisClass::class));
-        self::assertTrue($parent->hasModule(TestModuleTerClass::class));
+        require_once __DIR__.'/MockModuleContainer.php';
+
+        $container = new MockModuleContainer();
+        $module = new FirstTestModule($container);
+
+        self::assertSame($container, $module->getContainer());
+        self::assertInternalType('array', $module->getEventListeners());
+
+        self::assertFalse($module->eventsAttached);
+
+        $module->attachEvents();
+        self::assertTrue($module->eventsAttached);
+        $module->detachEvents();
+        self::assertFalse($module->eventsAttached);
     }
 
     /**
-     * @covers \Phug\Util\AbstractModule
-     * @covers \Phug\Util\AbstractModule::<public>
-     * @covers \Phug\Util\Partial\ModuleTrait::getModuleName
-     * @covers \Phug\Util\Partial\ModuleTrait::addModule
-     * @covers \Phug\Util\Partial\ModuleTrait::removeModule
+     * @covers ::attachEvents
+     * @covers ::detachEvents
      */
-    public function testModuleEvents()
+    public function testContainerModuleInstanciation()
     {
-        $count = 0;
-        $module = new TestModuleClass();
-        $offPlug = $module->onPlug(function (ModulesContainerInterface $container) use (&$count) {
-            $count++;
-        });
-        $offUnplug = $module->onUnplug(function (ModulesContainerInterface $container) use (&$count) {
-            $count += 2;
-        });
-        $parent1 = new TestParentClass();
-        $parent1->addModule($module);
-        self::assertSame(1, $count);
-        $parent1->removeModule($module);
-        self::assertSame(3, $count);
-        $offPlug();
-        $offUnplug();
-        $parent2 = new TestParentBisClass();
-        $parent2->addModule($module);
-        self::assertSame(3, $count);
-        $parent2->removeModule($module);
-        self::assertSame(3, $count);
+        require_once __DIR__.'/MockModuleContainer.php';
+
+        $container = new MockModuleContainer();
+
+        /* @var FirstTestModule $module */
+        self::assertFalse($container->hasModule(FirstTestModule::class));
+        self::assertSame($container, $container->addModule(FirstTestModule::class));
+        self::assertTrue($container->hasModule(FirstTestModule::class));
+        self::assertInstanceOf(FirstTestModule::class, $module = $container->getModule(FirstTestModule::class));
+
+        self::assertTrue($module->eventsAttached);
+        self::assertSame($container, $container->removeModule(FirstTestModule::class));
+        self::assertFalse($container->hasModule(FirstTestModule::class));
+        self::assertFalse($module->eventsAttached);
     }
 
     /**
-     * @covers                   \Phug\Util\AbstractModule
-     * @covers                   \Phug\Util\AbstractModule::<public>
-     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
-     * @covers                   \Phug\Util\Partial\ModuleTrait::addModule
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Phug\Util\Partial\ModuleTrait must be used with Phug\Util\ModulesContainerInterface
+     * @covers ::attachEvents
+     * @covers ::detachEvents
      */
-    public function testWrongContainerException()
+    public function testModuleEventHandling()
     {
-        $parent = new TestNoInterfacedParentClass();
-        $parent->addModule(TestModuleClass::class);
-    }
+        require_once __DIR__.'/MockModuleContainer.php';
 
-    /**
-     * @covers                   \Phug\Util\AbstractModule
-     * @covers                   \Phug\Util\AbstractModule::<public>
-     * @covers                   \Phug\Util\Partial\ModuleTrait::getModuleName
-     * @covers                   \Phug\Util\Partial\ModuleTrait::addModule
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Passed module needs to implement Phug\Util\ModuleInterface. stdClass given.
-     */
-    public function testWrongModuleException()
-    {
-        $someObj = new stdClass();
-        $parent = new TestParentClass();
-        $parent->addModule($someObj);
+        $container = new SpecificModuleContainer();
+
+        /* @var FirstSpecificTestModule $module */
+        self::assertFalse($container->hasModule(FirstSpecificTestModule::class));
+        self::assertSame($container, $container->addModule(FirstSpecificTestModule::class));
+        self::assertTrue($container->hasModule(FirstSpecificTestModule::class));
+        self::assertInstanceOf(FirstSpecificTestModule::class, $module = $container->getModule(FirstSpecificTestModule::class));
+
+        self::assertTrue($module->eventsAttached);
+
+        //This will trigger the event system, check out SpecificModuleContainer->doStuff and FirstSpecificTestModule->handleStuff
+        self::assertSame('Payload was 15', $container->doStuff());
+
+        self::assertSame($container, $container->removeModule(FirstSpecificTestModule::class));
+        self::assertFalse($container->hasModule(FirstSpecificTestModule::class));
+        self::assertFalse($module->eventsAttached);
+
+        //Default value if no listeners attached is always null
+        self::assertNull($container->doStuff());
     }
 }
 //@codingStandardsIgnoreEnd

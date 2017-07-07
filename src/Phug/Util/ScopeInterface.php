@@ -8,7 +8,7 @@ namespace Phug\Util;
 interface ScopeInterface
 {
     /**
-     * @param object $object
+     * @param array $options
      *
      * @return $this
      */
