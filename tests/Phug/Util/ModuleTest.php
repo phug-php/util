@@ -2,12 +2,6 @@
 
 namespace Phug\Test\Util;
 
-use Phug\Util\AbstractModule;
-use Phug\Util\ModuleContainerInterface;
-use Phug\Util\ModuleInterface;
-use Phug\Util\Partial\ModuleContainerTrait;
-use stdClass;
-
 //@codingStandardsIgnoreStart
 
 /**
@@ -15,7 +9,6 @@ use stdClass;
  */
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers ::__construct
      * @covers ::getContainer
@@ -51,7 +44,7 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
 
         $container = new MockModuleContainer();
 
-        /** @var FirstTestModule $module */
+        /* @var FirstTestModule $module */
         self::assertFalse($container->hasModule(FirstTestModule::class));
         self::assertSame($container, $container->addModule(FirstTestModule::class));
         self::assertTrue($container->hasModule(FirstTestModule::class));
@@ -73,7 +66,7 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
 
         $container = new SpecificModuleContainer();
 
-        /** @var FirstSpecificTestModule $module */
+        /* @var FirstSpecificTestModule $module */
         self::assertFalse($container->hasModule(FirstSpecificTestModule::class));
         self::assertSame($container, $container->addModule(FirstSpecificTestModule::class));
         self::assertTrue($container->hasModule(FirstSpecificTestModule::class));

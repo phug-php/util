@@ -20,13 +20,11 @@ class SpecificModuleContainer implements ModuleContainerInterface
 
     public function getModuleBaseClassName()
     {
-
         return SpecificModuleInterface::class;
     }
 
     public function doStuff()
     {
-
         return $this->trigger('stuff', null, ['payload' => 15]);
     }
 }
@@ -38,7 +36,6 @@ class MockModuleContainerWithoutInterface
 
 class FirstTestModule extends AbstractModule
 {
-
     public $eventsAttached = false;
 
     public function attachEvents()
@@ -66,18 +63,15 @@ interface SpecificModuleInterface extends ModuleInterface
 
 class FirstSpecificTestModule extends FirstTestModule implements SpecificModuleInterface
 {
-
     public function handleStuff(EventInterface $e)
     {
-
         return "Payload was {$e->getParam('payload')}";
     }
 
     public function getEventListeners()
     {
-
         return [
-            'stuff' => [$this, 'handleStuff']
+            'stuff' => [$this, 'handleStuff'],
         ];
     }
 }

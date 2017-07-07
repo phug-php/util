@@ -20,19 +20,16 @@ trait ModuleContainerTrait
 
     public function hasModule($className)
     {
-
         return isset($this->modules[$className]);
     }
 
     public function getModule($className)
     {
-
         return $this->modules[$className];
     }
 
     public function addModule($className)
     {
-
         if (!is_subclass_of($className, $this->getModuleBaseClassName(), true)
             || !is_subclass_of($className, ModuleInterface::class)) {
             throw new \InvalidArgumentException(
@@ -64,7 +61,6 @@ trait ModuleContainerTrait
 
     public function addModules(array $classNames)
     {
-
         foreach ($classNames as $className) {
             $this->addModule($className);
         }
@@ -74,7 +70,6 @@ trait ModuleContainerTrait
 
     public function removeModule($className)
     {
-
         if (!$this->hasModule($className)) {
             throw new \InvalidArgumentException(
                 'The container doesn\'t contain a '.$className.' module'
@@ -89,7 +84,6 @@ trait ModuleContainerTrait
 
     public function getModuleBaseClassName()
     {
-
         return ModuleInterface::class;
     }
 }
