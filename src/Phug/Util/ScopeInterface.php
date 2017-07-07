@@ -9,8 +9,8 @@ interface ScopeInterface
 {
     /**
      * @param array $options
-     * @return $this
      *
+     * @return $this
      */
     public function setOptions(array $options);
 

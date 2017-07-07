@@ -15,7 +15,6 @@ abstract class AbstractModule implements ModuleInterface
 
     public function __construct(ModuleContainerInterface $container)
     {
-
         $this->container = $container;
     }
 
@@ -24,19 +23,16 @@ abstract class AbstractModule implements ModuleInterface
      */
     public function getContainer()
     {
-
         return $this->container;
     }
 
     public function getEventListeners()
     {
-
         return [];
     }
 
     public function attachEvents()
     {
-
         foreach ($this->getEventListeners() as $event => $listener) {
             $this->container->attach($event, $listener);
         }
@@ -44,7 +40,6 @@ abstract class AbstractModule implements ModuleInterface
 
     public function detachEvents()
     {
-
         foreach ($this->getEventListeners() as $event => $listener) {
             $this->container->detach($event, $listener);
         }

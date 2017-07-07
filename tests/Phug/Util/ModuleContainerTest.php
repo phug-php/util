@@ -12,7 +12,6 @@ use stdClass;
  */
 class ModuleContainerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers ::getModuleBaseClassName
      * @covers ::addModule
@@ -45,7 +44,7 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame($container, $container->addModules([
             FirstTestModule::class,
-            SecondTestModule::class
+            SecondTestModule::class,
         ]));
 
         self::assertTrue($container->hasModule(FirstTestModule::class));
