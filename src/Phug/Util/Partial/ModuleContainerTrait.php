@@ -33,8 +33,8 @@ trait ModuleContainerTrait
     public function addModule($className)
     {
 
-        if (!is_subclass_of($className, $this->getModuleBaseClassName(), true) || !is_subclass_of($className, ModuleInterface::class)) {
-
+        if (!is_subclass_of($className, $this->getModuleBaseClassName(), true)
+            || !is_subclass_of($className, ModuleInterface::class)) {
             throw new \InvalidArgumentException(
                 'Passed module class name needs to be a class extending '.$this->getModuleBaseClassName()
                 .' and/or '.ModuleInterface::class
@@ -42,16 +42,14 @@ trait ModuleContainerTrait
         }
 
         if (isset($this->modules[$className])) {
-
             throw new \InvalidArgumentException(
                 'Module '.$className.' is already registered.'
             );
         }
 
         if (!($this instanceof ModuleContainerInterface)) {
-
             throw new \RuntimeException(
-                'Current module container uses the ModuleContainerTrait, but doesn\' implement '
+                'Current module container uses the ModuleContainerTrait, but doesn\'t implement '
                 .ModuleContainerInterface::class.', please implement it.'
             );
         }
@@ -68,7 +66,6 @@ trait ModuleContainerTrait
     {
 
         foreach ($classNames as $className) {
-
             $this->addModule($className);
         }
 
@@ -79,7 +76,6 @@ trait ModuleContainerTrait
     {
 
         if (!$this->hasModule($className)) {
-
             throw new \InvalidArgumentException(
                 'The container doesn\'t contain a '.$className.' module'
             );

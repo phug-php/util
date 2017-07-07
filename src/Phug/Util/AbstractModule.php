@@ -38,7 +38,6 @@ abstract class AbstractModule implements ModuleInterface
     {
 
         foreach ($this->getEventListeners() as $event => $listener) {
-
             $this->container->attach($event, $listener);
         }
     }
@@ -47,7 +46,6 @@ abstract class AbstractModule implements ModuleInterface
     {
 
         foreach ($this->getEventListeners() as $event => $listener) {
-
             $this->container->detach($event, $listener);
         }
     }
