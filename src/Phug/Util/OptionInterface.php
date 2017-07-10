@@ -7,7 +7,6 @@ namespace Phug\Util;
  */
 interface OptionInterface
 {
-
     /**
      * @param string|array $name
      *
