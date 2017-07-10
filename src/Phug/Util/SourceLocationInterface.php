@@ -4,7 +4,6 @@ namespace Phug\Util;
 
 interface SourceLocationInterface extends DocumentLocationInterface
 {
-
     /**
      * @return int
      */

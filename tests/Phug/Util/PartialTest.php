@@ -3,10 +3,10 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\DocumentLocationInterface;
-use Phug\Util\SourceLocation;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use Phug\Util\ScopeInterface;
+use Phug\Util\SourceLocation;
 use stdClass;
 
 //@codingStandardsIgnoreStart
