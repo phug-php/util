@@ -7,8 +7,6 @@ namespace Phug\Util;
  */
 interface ModuleInterface extends OptionInterface
 {
-    public function __construct(ModuleContainerInterface $container);
-
     public function getContainer();
 
     public function attachEvents();

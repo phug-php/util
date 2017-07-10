@@ -32,7 +32,7 @@ trait OptionTrait
      *
      * @return &$options
      */
-    private function withOptionsReference(&$keys, $callback)
+    private function withOptionReference(&$keys, $callback)
     {
         $options = &$this->options;
         if (is_array($keys)) {
@@ -72,12 +72,31 @@ trait OptionTrait
         return $this->setOptionArrays(func_get_args(), 'array_replace_recursive');
     }
 
+    public function hasOption($name)
+    {
+
+        if (!is_array($name)) {
+            $name = [$name];
+        }
+
+        $current = &$this->options;
+        foreach ($name as $key) {
+            if (!isset($current[$key])) {
+                return false;
+            }
+
+            $current = &$current[$key];
+        }
+
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function getOption($keys)
+    public function getOption($name)
     {
-        return $this->withOptionsReference($keys, function (&$options, $name) {
+        return $this->withOptionReference($name, function (&$options, $name) {
             return $options[$name];
         });
     }
@@ -85,9 +104,9 @@ trait OptionTrait
     /**
      * {@inheritdoc}
      */
-    public function setOption($keys, $value)
+    public function setOption($name, $value)
     {
-        $this->withOptionsReference($keys, function (&$options, $name) use ($value) {
+        $this->withOptionReference($name, function (&$options, $name) use ($value) {
             $options[$name] = $value;
         });
 
@@ -97,9 +116,9 @@ trait OptionTrait
     /**
      * {@inheritdoc}
      */
-    public function unsetOption($keys)
+    public function unsetOption($name)
     {
-        $this->withOptionsReference($keys, function (&$options, $name) {
+        $this->withOptionReference($name, function (&$options, $name) {
             unset($options[$name]);
         });
 

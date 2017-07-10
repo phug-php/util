@@ -7,6 +7,29 @@ namespace Phug\Util;
  */
 interface OptionInterface
 {
+
+    /**
+     * @param string|array $name
+     *
+     * @return mixed
+     */
+    public function hasOption($name);
+
+    /**
+     * @param string|array $name
+     *
+     * @return mixed
+     */
+    public function getOption($name);
+
+    /**
+     * @param string|array $name
+     * @param mixed        $value
+     *
+     * @return $this
+     */
+    public function setOption($name, $value);
+
     /**
      * @return array
      */
@@ -25,21 +48,6 @@ interface OptionInterface
      * @return $this
      */
     public function setOptionsRecursive(array $options);
-
-    /**
-     * @param string|array $name
-     *
-     * @return mixed
-     */
-    public function getOption($name);
-
-    /**
-     * @param string|array $name
-     * @param mixed        $value
-     *
-     * @return $this
-     */
-    public function setOption($name, $value);
 
     /**
      * @param string|array $name

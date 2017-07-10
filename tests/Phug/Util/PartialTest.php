@@ -360,12 +360,13 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      * @covers \Phug\Util\OptionInterface
      * @covers \Phug\Util\Partial\OptionTrait
      * @covers \Phug\Util\Partial\OptionTrait::setOptionArrays
-     * @covers \Phug\Util\Partial\OptionTrait::withOptionsReference
+     * @covers \Phug\Util\Partial\OptionTrait::withOptionReference
      * @covers \Phug\Util\Partial\OptionTrait::getOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptionsRecursive
      * @covers \Phug\Util\Partial\OptionTrait::getOption
      * @covers \Phug\Util\Partial\OptionTrait::setOption
+     * @covers \Phug\Util\Partial\OptionTrait::hasOption
      * @covers \Phug\Util\Partial\OptionTrait::unsetOption
      */
     public function testOptionTraitAndInterface()
@@ -406,6 +407,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
 
         $inst->setOptions($options);
         self::assertSame($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        self::assertTrue($inst->hasOption('b'), '$inst->hasOption(b)');
+        self::assertTrue($inst->hasOption(['b', 'c']), '$inst->hasOption([b, c])');
+        self::assertFalse($inst->hasOption('unknown'), '$inst->hasOption(unknown)');
+        self::assertFalse($inst->hasOption(['unknown', 'unknown']), '$inst->hasOption([unknown, unknown])');
+        self::assertFalse($inst->hasOption(['b', 'unknown']), '$inst->hasOption([b, unknown])');
         self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
