@@ -10,7 +10,6 @@ class SourceLocation implements SourceLocationInterface
 
     public function __construct($path, $line, $offset, $offsetLength = null)
     {
-
         $this->path = $path;
         $this->line = $line;
         $this->offset = $offset;
