@@ -2,7 +2,7 @@
 
 namespace Phug\Util\Exception;
 
-use Phug\Util\ExceptionLocation;
+use Phug\Util\SourceLocation;
 
 class LocatedException extends \Exception
 {
@@ -10,7 +10,7 @@ class LocatedException extends \Exception
     private $location;
 
     public function __construct(
-        ExceptionLocation $location,
+        SourceLocation $location,
         $message = "",
         $code = 0,
         $previous = null
@@ -22,7 +22,7 @@ class LocatedException extends \Exception
     }
 
     /**
-     * @return ExceptionLocation
+     * @return SourceLocation
      */
     public function getLocation()
     {

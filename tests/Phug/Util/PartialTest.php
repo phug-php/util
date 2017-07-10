@@ -3,7 +3,7 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\DocumentLocationInterface;
-use Phug\Util\ExceptionLocation;
+use Phug\Util\SourceLocation;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use Phug\Util\InputLocationInterface;
@@ -460,19 +460,19 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Phug\Util\ExceptionLocationInterface
-     * @covers \Phug\Util\ExceptionLocation
-     * @covers \Phug\Util\ExceptionLocation::getPath()
-     * @covers \Phug\Util\ExceptionLocation::getLine()
-     * @covers \Phug\Util\ExceptionLocation::getOffset()
-     * @covers \Phug\Util\Partial\ExceptionLocationTrait
-     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getPath()
-     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getLine()
-     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getOffset()
+     * @covers \Phug\Util\SourceLocationInterface
+     * @covers \Phug\Util\SourceLocation
+     * @covers \Phug\Util\SourceLocation::getPath()
+     * @covers \Phug\Util\SourceLocation::getLine()
+     * @covers \Phug\Util\SourceLocation::getOffset()
+     * @covers \Phug\Util\Partial\SourceLocationTrait
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getPath()
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getLine()
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffset()
      */
     public function testPugFileLocationTrait()
     {
-        $inst = new ExceptionLocation('foo.pug', 2, 15);
+        $inst = new SourceLocation('foo.pug', 2, 15);
         self::assertSame('foo.pug', $inst->getPath());
 
         self::assertSame(2, $inst->getLine());
