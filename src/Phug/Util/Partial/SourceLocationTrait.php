@@ -19,4 +19,16 @@ trait SourceLocationTrait
     {
         return $this->offsetLength;
     }
+
+    /**
+     * @param int $offsetLength
+     *
+     * @return $this
+     */
+    public function setOffsetLength($offsetLength)
+    {
+        $this->offsetLength = $offsetLength;
+
+        return $this;
+    }
 }
