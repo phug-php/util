@@ -6,7 +6,6 @@ use Phug\Util\DocumentLocationInterface;
 use Phug\Util\ExceptionLocation;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
-use Phug\Util\InputLocationInterface;
 use Phug\Util\ScopeInterface;
 use stdClass;
 

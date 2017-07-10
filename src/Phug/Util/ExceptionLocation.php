@@ -10,7 +10,6 @@ class ExceptionLocation implements ExceptionLocationInterface
 
     public function __construct($path, $line, $offset)
     {
-
         $this->path = $path;
         $this->line = $line;
         $this->offset = $offset;
