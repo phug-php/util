@@ -7,18 +7,7 @@ namespace Phug\Util\Partial;
  */
 trait PathTrait
 {
-    /**
-     * @var string
-     */
-    private $path = null;
-
-    /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
+    use PathGetTrait;
 
     /**
      * @param string $path

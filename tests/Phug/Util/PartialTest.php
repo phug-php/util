@@ -3,9 +3,10 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\DocumentLocationInterface;
+use Phug\Util\ExceptionLocation;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
-use Phug\Util\PugFileLocationInterface;
+use Phug\Util\InputLocationInterface;
 use Phug\Util\ScopeInterface;
 use stdClass;
 
@@ -13,7 +14,7 @@ use stdClass;
 /**
  * Class TestClass.
  */
-class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInterface, PugFileLocationInterface
+class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInterface
 {
     use Partial\AssignmentTrait;
     use Partial\AttributeTrait;
@@ -33,7 +34,6 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
     use Partial\SubjectTrait;
     use Partial\ValueTrait;
     use Partial\VisibleTrait;
-    use Partial\PugFileLocationTrait;
 
     /**
      * @param int $line
@@ -460,29 +460,24 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Phug\Util\PugFileLocationInterface
-     * @covers \Phug\Util\Partial\PugFileLocationTrait
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::setPugFile
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::getPugFile
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::setPugLine
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::getPugLine
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::setPugOffset
-     * @covers \Phug\Util\Partial\PugFileLocationTrait::getPugOffset
+     * @covers \Phug\Util\ExceptionLocationInterface
+     * @covers \Phug\Util\ExceptionLocation
+     * @covers \Phug\Util\ExceptionLocation::getPath()
+     * @covers \Phug\Util\ExceptionLocation::getLine()
+     * @covers \Phug\Util\ExceptionLocation::getOffset()
+     * @covers \Phug\Util\Partial\ExceptionLocationTrait
+     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getPath()
+     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getLine()
+     * @covers \Phug\Util\Partial\ExceptionLocationTrait::getOffset()
      */
     public function testPugFileLocationTrait()
     {
-        $inst = new TestClass();
-        self::assertSame(null, $inst->getPugFile());
-        self::assertSame($inst, $inst->setPugFile('foo.pug'));
-        self::assertSame('foo.pug', $inst->getPugFile());
+        $inst = new ExceptionLocation('foo.pug', 2, 15);
+        self::assertSame('foo.pug', $inst->getPath());
 
-        self::assertSame(null, $inst->getPugLine());
-        self::assertSame($inst, $inst->setPugLine(2));
-        self::assertSame(2, $inst->getPugLine());
+        self::assertSame(2, $inst->getLine());
 
-        self::assertSame(null, $inst->getPugOffset());
-        self::assertSame($inst, $inst->setPugOffset(15));
-        self::assertSame(15, $inst->getPugOffset());
+        self::assertSame(15, $inst->getOffset());
     }
 }
 //@codingStandardsIgnoreEnd
