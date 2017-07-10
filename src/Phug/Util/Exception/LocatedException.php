@@ -6,16 +6,14 @@ use Phug\Util\ExceptionLocation;
 
 class LocatedException extends \Exception
 {
-
     private $location;
 
     public function __construct(
         ExceptionLocation $location,
-        $message = "",
+        $message = '',
         $code = 0,
         $previous = null
     ) {
-    
         parent::__construct($message, $code, $previous);
 
         $this->location = $location;

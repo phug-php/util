@@ -74,7 +74,6 @@ trait OptionTrait
 
     public function hasOption($name)
     {
-
         if (!is_array($name)) {
             $name = [$name];
         }
