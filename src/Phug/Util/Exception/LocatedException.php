@@ -2,14 +2,14 @@
 
 namespace Phug\Util\Exception;
 
-use Phug\Util\SourceLocation;
+use Phug\Util\SourceLocationInterface;
 
 class LocatedException extends \Exception
 {
     private $location;
 
     public function __construct(
-        SourceLocation $location,
+        SourceLocationInterface $location,
         $message = '',
         $code = 0,
         $previous = null
@@ -20,7 +20,7 @@ class LocatedException extends \Exception
     }
 
     /**
-     * @return SourceLocation
+     * @return SourceLocationInterface
      */
     public function getLocation()
     {
