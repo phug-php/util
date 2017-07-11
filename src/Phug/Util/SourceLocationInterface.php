@@ -8,6 +8,7 @@ interface SourceLocationInterface extends DocumentLocationInterface
      * @return int
      */
     public function getOffsetLength();
+
     public function setOffsetLength($offsetLength);
 
     /**
