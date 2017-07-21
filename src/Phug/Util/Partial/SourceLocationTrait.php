@@ -5,7 +5,7 @@ namespace Phug\Util\Partial;
 trait SourceLocationTrait
 {
     use DocumentLocationTrait;
-    use PathGetTrait;
+    use PathTrait;
 
     /**
      * @var int

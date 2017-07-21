@@ -3,6 +3,7 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\DocumentLocationInterface;
+use Phug\Util\Exception\LocatedException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use Phug\Util\ScopeInterface;
@@ -486,22 +487,39 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Phug\Util\SourceLocationInterface
      * @covers \Phug\Util\SourceLocation
-     * @covers \Phug\Util\SourceLocation::getPath()
-     * @covers \Phug\Util\SourceLocation::getLine()
-     * @covers \Phug\Util\SourceLocation::getOffset()
+     * @covers \Phug\Util\SourceLocation::getPath
+     * @covers \Phug\Util\SourceLocation::getLine
+     * @covers \Phug\Util\SourceLocation::getOffset
      * @covers \Phug\Util\Partial\SourceLocationTrait
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getPath()
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getLine()
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffset()
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getPath
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getLine
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffset
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffsetLength
+     * @covers \Phug\Util\Partial\SourceLocationTrait::setOffsetLength
+     * @covers \Phug\Util\Exception\LocatedException
+     * @covers \Phug\Util\Exception\LocatedException::getLocation
      */
-    public function testPugFileLocationTrait()
+    public function testSourceLocationTrait()
     {
         $inst = new SourceLocation('foo.pug', 2, 15);
+
         self::assertSame('foo.pug', $inst->getPath());
-
         self::assertSame(2, $inst->getLine());
-
         self::assertSame(15, $inst->getOffset());
+
+        $inst = new SourceLocation('foo.pug', 2, 15, 0);
+
+        self::assertSame(0, $inst->getOffsetLength());
+
+        $inst->setOffsetLength(9);
+
+        self::assertSame(9, $inst->getOffsetLength());
+
+        $exception = new LocatedException($inst);
+
+        self::assertSame(9, $exception->getLocation()->getOffsetLength());
+        self::assertSame(0, $exception->getCode());
+        self::assertSame('', $exception->getMessage());
     }
 }
 //@codingStandardsIgnoreEnd
