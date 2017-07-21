@@ -101,8 +101,7 @@ trait OptionTrait
     {
         if (!$this->hasOption($key)) {
             $this->setOption($key, $value);
-        } elseif (
-            is_array($option = $this->getOption($key)) &&
+        } elseif (is_array($option = $this->getOption($key)) &&
             (!count($option) || is_string(key($option))) && is_array($value)
         ) {
             $this->setOption($key, array_replace_recursive($value, $this->getOption($key)));
