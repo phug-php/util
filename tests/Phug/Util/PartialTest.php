@@ -413,7 +413,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($inst->hasOption('b'), '$inst->hasOption(b)');
         self::assertTrue(isset($inst->getOption('b')['c']), '$inst->hasOption([b, c])');
         self::assertFalse($inst->hasOption('unknown'), '$inst->hasOption(unknown)');
-        self::assertFalse(isset($inst->getOption('unknown')['unknown']), '$inst->hasOption([unknown, unknown])');
+        self::assertFalse($inst->hasOption(['unknown', 'unknown']), '$inst->hasOption([unknown, unknown])');
         self::assertFalse(isset($inst->getOption('b')['unknown']), '$inst->hasOption([b, unknown])');
         self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
@@ -424,7 +424,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $cloned->setOptions([], null, $anotherFlatOptions);
         self::assertSame(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
 
-        $inst->setOptionsRecursive($deepOptions);
+        $inst->setOptionsRecursive($options, $deepOptions);
         self::assertSame(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOptionsRecursive([], $anotherDeepOptions);
@@ -434,19 +434,20 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $inst->setOption('b', 5);
         self::assertSame(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
 
+        $inst->setOption('foo', 'bar');
         $inst->setOption(['foo', 'bar'], 3);
         $inst->setOption(['foo', 'baz'], 6);
-        self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 6');
         $inst->setOption(['foo', 'baz'], 8);
-        self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 8');
         $inst->unsetOption(['foo', 'baz']);
-        self::assertSame(['bar' => 3], $inst->getOption('foo'), '$inst->getOption(foo.bar) === 5');
+        self::assertFalse($inst->hasOption(['foo', 'baz']), '$inst->hasOption(foo.bar) === false');
         $inst->setOption('foo_bar', 'a');
         self::assertSame('a', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === a');
-        self::assertSame(null, $inst->getOption('fooBar'), '$inst->getOption(fooBar) === null');
+        self::assertFalse($inst->hasOption('fooBar'), '$inst->hasOption(fooBar) === false');
         $inst->addOptionNameHandlers(function ($name) {
-            return preg_replace_callback('/_(\w)/', function ($matches) {
-                return strtoupper($matches[1]);
+            return preg_replace_callback('/[A-Z]/', function ($matches) {
+                return '_'.strtolower($matches[0]);
             }, $name);
         });
         self::assertSame('a', $inst->getOption('fooBar'), '$inst->getOption(fooBar) === a');
