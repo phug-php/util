@@ -359,7 +359,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      * @covers \Phug\Util\OptionInterface
      * @covers \Phug\Util\Partial\OptionTrait
      * @covers \Phug\Util\Partial\OptionTrait::setOptionArrays
-     * @covers \Phug\Util\Partial\OptionTrait::withOptionReference
+     * @covers \Phug\Util\Partial\OptionTrait::handleOptionName
+     * @covers \Phug\Util\Partial\OptionTrait::addOptionNameHandlers
+     * @covers \Phug\Util\Partial\OptionTrait::setDefaultOption
+     * @covers \Phug\Util\Partial\OptionTrait::setOptionsDefaults
+     * @covers \Phug\Util\Partial\OptionTrait::filterTraversable
      * @covers \Phug\Util\Partial\OptionTrait::getOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptionsRecursive
@@ -371,7 +375,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     public function testOptionTraitAndInterface()
     {
         $inst = new TestClass();
-        self::assertInternalType('array', $inst->getOptions());
+        self::assertInstanceOf(\ArrayObject::class, $inst->getOptions());
         self::assertCount(0, $inst->getOptions());
 
         $options = [
@@ -405,12 +409,12 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         ];
 
         $inst->setOptions($options);
-        self::assertSame($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        self::assertSame($options, (array) $inst->getOptions(), '$options === $inst->getOptions()');
         self::assertTrue($inst->hasOption('b'), '$inst->hasOption(b)');
-        self::assertTrue($inst->hasOption(['b', 'c']), '$inst->hasOption([b, c])');
+        self::assertTrue(isset($inst->getOption('b')['c']), '$inst->hasOption([b, c])');
         self::assertFalse($inst->hasOption('unknown'), '$inst->hasOption(unknown)');
-        self::assertFalse($inst->hasOption(['unknown', 'unknown']), '$inst->hasOption([unknown, unknown])');
-        self::assertFalse($inst->hasOption(['b', 'unknown']), '$inst->hasOption([b, unknown])');
+        self::assertFalse(isset($inst->getOption('unknown')['unknown']), '$inst->hasOption([unknown, unknown])');
+        self::assertFalse(isset($inst->getOption('b')['unknown']), '$inst->hasOption([b, unknown])');
         self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
@@ -437,6 +441,26 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
         $inst->unsetOption(['foo', 'baz']);
         self::assertSame(['bar' => 3], $inst->getOption('foo'), '$inst->getOption(foo.bar) === 5');
+        $inst->setOption('foo_bar', 'a');
+        self::assertSame('a', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === a');
+        self::assertSame(null, $inst->getOption('fooBar'), '$inst->getOption(fooBar) === null');
+        $inst->addOptionNameHandlers(function ($name) {
+            return preg_replace_callback('/_(\w)/', function ($matches) {
+                return strtoupper($matches[1]);
+            }, $name);
+        });
+        self::assertSame('a', $inst->getOption('fooBar'), '$inst->getOption(fooBar) === a');
+        $inst->setOption('fooBar', 'b');
+        self::assertSame('b', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === b');
+
+        $inst->setOptionsDefaults([
+            'new_option' => 3,
+        ]);
+        self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
+        $inst->setOptionsDefaults([
+            'new_option' => 79,
+        ]);
+        self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
     }
 
     /**
