@@ -97,6 +97,18 @@ trait OptionTrait
         return $this->setOptionArrays(func_get_args(), 'array_replace_recursive');
     }
 
+    private function setDefaultOption($key, $value)
+    {
+        if (!$this->hasOption($key)) {
+            $this->setOption($key, $value);
+        } elseif (
+            is_array($option = $this->getOption($key)) &&
+            (!count($option) || is_string(key($option))) && is_array($value)
+        ) {
+            $this->setOption($key, array_replace_recursive($value, $this->getOption($key)));
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -108,13 +120,7 @@ trait OptionTrait
         }
         foreach ($this->filterTraversable(array_slice(func_get_args(), $first ? 1 : 0)) as $array) {
             foreach ($array as $key => $value) {
-                if (!$this->hasOption($key)) {
-                    $this->setOption($key, $value);
-                } else if (is_array($option = $this->getOption($key))) {
-                    if ((!count($option) || is_string(key($option))) && is_array($value)) {
-                        $this->setOption($key, array_replace_recursive($value, $this->getOption($key)));
-                    }
-                }
+                $this->setDefaultOption($key, $value);
             }
         }
 
