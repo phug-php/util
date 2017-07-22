@@ -39,14 +39,21 @@ interface OptionInterface
      *
      * @return $this
      */
-    public function setOptions(array $options);
+    public function setOptions($options);
 
     /**
      * @param array $options
      *
      * @return $this
      */
-    public function setOptionsRecursive(array $options);
+    public function setOptionsRecursive($options);
+
+    /**
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptionsDefaults($options);
 
     /**
      * @param string|array $name

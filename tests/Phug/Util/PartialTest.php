@@ -3,6 +3,7 @@
 namespace Phug\Test\Util;
 
 use Phug\Util\DocumentLocationInterface;
+use Phug\Util\Exception\LocatedException;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial;
 use Phug\Util\ScopeInterface;
@@ -359,7 +360,11 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      * @covers \Phug\Util\OptionInterface
      * @covers \Phug\Util\Partial\OptionTrait
      * @covers \Phug\Util\Partial\OptionTrait::setOptionArrays
-     * @covers \Phug\Util\Partial\OptionTrait::withOptionReference
+     * @covers \Phug\Util\Partial\OptionTrait::handleOptionName
+     * @covers \Phug\Util\Partial\OptionTrait::addOptionNameHandlers
+     * @covers \Phug\Util\Partial\OptionTrait::setDefaultOption
+     * @covers \Phug\Util\Partial\OptionTrait::setOptionsDefaults
+     * @covers \Phug\Util\Partial\OptionTrait::filterTraversable
      * @covers \Phug\Util\Partial\OptionTrait::getOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptions
      * @covers \Phug\Util\Partial\OptionTrait::setOptionsRecursive
@@ -371,7 +376,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     public function testOptionTraitAndInterface()
     {
         $inst = new TestClass();
-        self::assertInternalType('array', $inst->getOptions());
+        self::assertInstanceOf(\ArrayObject::class, $inst->getOptions());
         self::assertCount(0, $inst->getOptions());
 
         $options = [
@@ -405,12 +410,12 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         ];
 
         $inst->setOptions($options);
-        self::assertSame($options, $inst->getOptions(), '$options === $inst->getOptions()');
+        self::assertSame($options, (array) $inst->getOptions(), '$options === $inst->getOptions()');
         self::assertTrue($inst->hasOption('b'), '$inst->hasOption(b)');
-        self::assertTrue($inst->hasOption(['b', 'c']), '$inst->hasOption([b, c])');
+        self::assertTrue(isset($inst->getOption('b')['c']), '$inst->hasOption([b, c])');
         self::assertFalse($inst->hasOption('unknown'), '$inst->hasOption(unknown)');
         self::assertFalse($inst->hasOption(['unknown', 'unknown']), '$inst->hasOption([unknown, unknown])');
-        self::assertFalse($inst->hasOption(['b', 'unknown']), '$inst->hasOption([b, unknown])');
+        self::assertFalse(isset($inst->getOption('b')['unknown']), '$inst->hasOption([b, unknown])');
         self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
@@ -420,7 +425,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $cloned->setOptions([], null, $anotherFlatOptions);
         self::assertSame(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
 
-        $inst->setOptionsRecursive($deepOptions);
+        $inst->setOptionsRecursive($options, $deepOptions);
         self::assertSame(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOptionsRecursive([], $anotherDeepOptions);
@@ -430,13 +435,34 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $inst->setOption('b', 5);
         self::assertSame(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
 
+        $inst->setOption('foo', 'bar');
         $inst->setOption(['foo', 'bar'], 3);
         $inst->setOption(['foo', 'baz'], 6);
-        self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 6');
         $inst->setOption(['foo', 'baz'], 8);
-        self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.bar) === 5');
+        self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 8');
         $inst->unsetOption(['foo', 'baz']);
-        self::assertSame(['bar' => 3], $inst->getOption('foo'), '$inst->getOption(foo.bar) === 5');
+        self::assertFalse($inst->hasOption(['foo', 'baz']), '$inst->hasOption(foo.bar) === false');
+        $inst->setOption('foo_bar', 'a');
+        self::assertSame('a', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === a');
+        self::assertFalse($inst->hasOption('fooBar'), '$inst->hasOption(fooBar) === false');
+        $inst->addOptionNameHandlers(function ($name) {
+            return preg_replace_callback('/[A-Z]/', function ($matches) {
+                return '_'.strtolower($matches[0]);
+            }, $name);
+        });
+        self::assertSame('a', $inst->getOption('fooBar'), '$inst->getOption(fooBar) === a');
+        $inst->setOption('fooBar', 'b');
+        self::assertSame('b', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === b');
+
+        $inst->setOptionsDefaults([
+            'new_option' => 3,
+        ]);
+        self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
+        $inst->setOptionsDefaults([
+            'new_option' => 79,
+        ]);
+        self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
     }
 
     /**
@@ -461,22 +487,39 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Phug\Util\SourceLocationInterface
      * @covers \Phug\Util\SourceLocation
-     * @covers \Phug\Util\SourceLocation::getPath()
-     * @covers \Phug\Util\SourceLocation::getLine()
-     * @covers \Phug\Util\SourceLocation::getOffset()
+     * @covers \Phug\Util\SourceLocation::getPath
+     * @covers \Phug\Util\SourceLocation::getLine
+     * @covers \Phug\Util\SourceLocation::getOffset
      * @covers \Phug\Util\Partial\SourceLocationTrait
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getPath()
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getLine()
-     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffset()
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getPath
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getLine
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffset
+     * @covers \Phug\Util\Partial\SourceLocationTrait::getOffsetLength
+     * @covers \Phug\Util\Partial\SourceLocationTrait::setOffsetLength
+     * @covers \Phug\Util\Exception\LocatedException
+     * @covers \Phug\Util\Exception\LocatedException::getLocation
      */
-    public function testPugFileLocationTrait()
+    public function testSourceLocationTrait()
     {
         $inst = new SourceLocation('foo.pug', 2, 15);
+
         self::assertSame('foo.pug', $inst->getPath());
-
         self::assertSame(2, $inst->getLine());
-
         self::assertSame(15, $inst->getOffset());
+
+        $inst = new SourceLocation('foo.pug', 2, 15, 0);
+
+        self::assertSame(0, $inst->getOffsetLength());
+
+        $inst->setOffsetLength(9);
+
+        self::assertSame(9, $inst->getOffsetLength());
+
+        $exception = new LocatedException($inst);
+
+        self::assertSame(9, $exception->getLocation()->getOffsetLength());
+        self::assertSame(0, $exception->getCode());
+        self::assertSame('', $exception->getMessage());
     }
 }
 //@codingStandardsIgnoreEnd

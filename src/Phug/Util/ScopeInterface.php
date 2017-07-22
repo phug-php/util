@@ -12,7 +12,7 @@ interface ScopeInterface
      *
      * @return $this
      */
-    public function setOptions(array $options);
+    public function setOptions($options);
 
     /**
      * @return string

@@ -2,15 +2,48 @@
 
 namespace Phug\Util\Partial;
 
+use ArrayObject;
+use Traversable;
+
 /**
  * Class OptionTrait.
  */
 trait OptionTrait
 {
     /**
+     * @var ArrayObject
+     */
+    protected $options = null;
+
+    /**
      * @var array
      */
-    private $options = [];
+    private $optionNameHandlers = [];
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    private function handleOptionName($name)
+    {
+        if (is_array($name)) {
+            $name = implode('.', $name);
+        }
+
+        foreach ($this->optionNameHandlers as $handler) {
+            $name = $handler($name);
+        }
+
+        return $name;
+    }
+
+    private function filterTraversable($values)
+    {
+        return array_filter($values, function ($value) {
+            return is_array($value) || $value instanceof Traversable;
+        });
+    }
 
     /**
      * @param array  $arrays
@@ -20,32 +53,20 @@ trait OptionTrait
      */
     private function setOptionArrays(array $arrays, $functionName)
     {
-        array_unshift($arrays, $this->options);
-        $this->options = call_user_func_array($functionName, array_filter($arrays, 'is_array'));
-
-        return $this;
-    }
-
-    /**
-     * @param array|string $keys
-     * @param callable     $callback
-     *
-     * @return &$options
-     */
-    private function withOptionReference(&$keys, $callback)
-    {
-        $options = &$this->options;
-        if (is_array($keys)) {
-            foreach (array_slice($keys, 0, -1) as $key) {
-                if (!array_key_exists($key, $options)) {
-                    $options[$key] = [];
-                }
-                $options = &$options[$key];
-            }
-            $keys = end($keys);
+        if (count($arrays) && !$this->options) {
+            $this->options = $arrays[0] instanceof ArrayObject ? $arrays[0] : new ArrayObject($arrays[0]);
         }
 
-        return $callback($options, $keys);
+        $options = $this->getOptions();
+        foreach ($this->filterTraversable($arrays) as $array) {
+            foreach ($array as $key => $value) {
+                $options[$key] = isset($options[$key]) && is_array($options[$key]) && is_array($value)
+                    ? $functionName($options[$key], $value)
+                    : $value;
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -53,13 +74,17 @@ trait OptionTrait
      */
     public function getOptions()
     {
+        if (!$this->options) {
+            $this->options = new ArrayObject();
+        }
+
         return $this->options;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setOptions($options)
     {
         return $this->setOptionArrays(func_get_args(), 'array_replace');
     }
@@ -67,27 +92,46 @@ trait OptionTrait
     /**
      * {@inheritdoc}
      */
-    public function setOptionsRecursive(array $options)
+    public function setOptionsRecursive($options)
     {
         return $this->setOptionArrays(func_get_args(), 'array_replace_recursive');
     }
 
+    private function setDefaultOption($key, $value)
+    {
+        if (!$this->hasOption($key)) {
+            $this->setOption($key, $value);
+        } elseif (is_array($option = $this->getOption($key)) &&
+            (!count($option) || is_string(key($option))) && is_array($value)
+        ) {
+            $this->setOption($key, array_replace_recursive($value, $this->getOption($key)));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptionsDefaults($options = null)
+    {
+        $first = $options && !$this->options;
+        if ($first) {
+            $this->options = $options instanceof ArrayObject ? $options : new ArrayObject($options);
+        }
+        foreach ($this->filterTraversable(array_slice(func_get_args(), $first ? 1 : 0)) as $array) {
+            foreach ($array as $key => $value) {
+                $this->setDefaultOption($key, $value);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function hasOption($name)
     {
-        if (!is_array($name)) {
-            $name = [$name];
-        }
-
-        $current = &$this->options;
-        foreach ($name as $key) {
-            if (!isset($current[$key])) {
-                return false;
-            }
-
-            $current = &$current[$key];
-        }
-
-        return true;
+        return array_key_exists($this->handleOptionName($name), $this->getOptions());
     }
 
     /**
@@ -95,9 +139,7 @@ trait OptionTrait
      */
     public function getOption($name)
     {
-        return $this->withOptionReference($name, function (&$options, $name) {
-            return $options[$name];
-        });
+        return $this->getOptions()[$this->handleOptionName($name)];
     }
 
     /**
@@ -105,9 +147,7 @@ trait OptionTrait
      */
     public function setOption($name, $value)
     {
-        $this->withOptionReference($name, function (&$options, $name) use ($value) {
-            $options[$name] = $value;
-        });
+        $this->getOptions()[$this->handleOptionName($name)] = $value;
 
         return $this;
     }
@@ -117,10 +157,16 @@ trait OptionTrait
      */
     public function unsetOption($name)
     {
-        $this->withOptionReference($name, function (&$options, $name) {
-            unset($options[$name]);
-        });
+        unset($this->getOptions()[$this->handleOptionName($name)]);
 
         return $this;
+    }
+
+    /**
+     * @param callable $handler
+     */
+    public function addOptionNameHandlers($handler)
+    {
+        $this->optionNameHandlers[] = $handler;
     }
 }
