@@ -180,7 +180,6 @@ trait OptionTrait
      */
     public function setOption($name, $value)
     {
-        var_dump($name, $value);
         $this->withOptionReference($name, function (&$options, $name) use ($value) {
             $options[$name] = $value;
         });
