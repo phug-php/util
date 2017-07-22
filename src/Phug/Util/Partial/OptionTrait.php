@@ -38,11 +38,14 @@ trait OptionTrait
         return $name;
     }
 
+    private function isTraversable($value)
+    {
+        return is_array($value) || $value instanceof Traversable;
+    }
+
     private function filterTraversable($values)
     {
-        return array_filter($values, function ($value) {
-            return is_array($value) || $value instanceof Traversable;
-        });
+        return array_filter($values, [$this, 'isTraversable']);
     }
 
     /**
@@ -155,7 +158,7 @@ trait OptionTrait
     public function hasOption($name)
     {
         return $this->withOptionReference($name, function (&$options, $name) {
-            return array_key_exists($name, $options);
+            return $this->isTraversable($options) && array_key_exists($name, $options);
         });
     }
 
