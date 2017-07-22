@@ -435,12 +435,15 @@ class PartialTest extends \PHPUnit_Framework_TestCase
         $inst->setOption('b', 5);
         self::assertSame(5, $inst->getOption('b'), '$inst->getOption(b) === 5');
 
-        $inst->setOption('foo', 'bar');
         $inst->setOption(['foo', 'bar'], 3);
         $inst->setOption(['foo', 'baz'], 6);
         self::assertSame(6, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 6');
         $inst->setOption(['foo', 'baz'], 8);
         self::assertSame(8, $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === 8');
+        self::assertSame(8, $inst->getOption('foo.baz'), '$inst->getOption(foo.baz) === 8');
+        $inst->setOption('foo.baz', 'r');
+        self::assertSame('r', $inst->getOption(['foo', 'baz']), '$inst->getOption(foo.baz) === r');
+        self::assertSame('r', $inst->getOption('foo.baz'), '$inst->getOption(foo.baz) === r');
         $inst->unsetOption(['foo', 'baz']);
         self::assertFalse($inst->hasOption(['foo', 'baz']), '$inst->hasOption(foo.bar) === false');
         $inst->setOption('foo_bar', 'a');

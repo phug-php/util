@@ -27,8 +27,8 @@ trait OptionTrait
      */
     private function handleOptionName($name)
     {
-        if (is_array($name)) {
-            $name = implode('.', $name);
+        if (is_string($name)) {
+            $name = explode('.', $name);
         }
 
         foreach ($this->optionNameHandlers as $handler) {
@@ -127,11 +127,36 @@ trait OptionTrait
     }
 
     /**
+     * @param array|string $keys
+     * @param callable     $callback
+     *
+     * @return &$options
+     */
+    private function withOptionReference($name, $callback)
+    {
+        $options = $this->options;
+        $keys = $this->handleOptionName($name);
+        if (is_array($keys)) {
+            foreach (array_slice($keys, 0, -1) as $key) {
+                if (!array_key_exists($key, $options)) {
+                    $options[$key] = [];
+                }
+                $options = &$options[$key];
+            }
+            $name = end($keys);
+        }
+
+        return $callback($options, $name);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hasOption($name)
     {
-        return array_key_exists($this->handleOptionName($name), $this->getOptions());
+        return $this->withOptionReference($name, function (&$options, $name) {
+            return array_key_exists($name, $options);
+        });
     }
 
     /**
@@ -139,7 +164,9 @@ trait OptionTrait
      */
     public function getOption($name)
     {
-        return $this->getOptions()[$this->handleOptionName($name)];
+        return $this->withOptionReference($name, function (&$options, $name) {
+            return $options[$name];
+        });
     }
 
     /**
@@ -147,7 +174,9 @@ trait OptionTrait
      */
     public function setOption($name, $value)
     {
-        $this->getOptions()[$this->handleOptionName($name)] = $value;
+        $this->withOptionReference($name, function (&$options, $name) use ($value) {
+            $options[$name] = $value;
+        });
 
         return $this;
     }
@@ -157,7 +186,9 @@ trait OptionTrait
      */
     public function unsetOption($name)
     {
-        unset($this->getOptions()[$this->handleOptionName($name)]);
+        $this->withOptionReference($name, function (&$options, $name) {
+            unset($options[$name]);
+        });
 
         return $this;
     }
