@@ -137,6 +137,9 @@ trait OptionTrait
      */
     private function withOptionReference($name, $callback)
     {
+        if (!$this->options) {
+            $this->options = new ArrayObject();
+        }
         $options = $this->options;
         $keys = $this->handleOptionName($name);
         if (is_array($keys)) {
@@ -177,6 +180,7 @@ trait OptionTrait
      */
     public function setOption($name, $value)
     {
+        var_dump($name, $value);
         $this->withOptionReference($name, function (&$options, $name) use ($value) {
             $options[$name] = $value;
         });
