@@ -372,6 +372,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
      * @covers \Phug\Util\Partial\OptionTrait::setOption
      * @covers \Phug\Util\Partial\OptionTrait::hasOption
      * @covers \Phug\Util\Partial\OptionTrait::unsetOption
+     * @covers \Phug\Util\Partial\OptionTrait::resetOptions
      */
     public function testOptionTraitAndInterface()
     {
@@ -466,6 +467,50 @@ class PartialTest extends \PHPUnit_Framework_TestCase
             'new_option' => 79,
         ]);
         self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
+
+        $inst->resetOptions();
+        self::assertFalse($inst->hasOption('foo.baz'));
+        self::assertFalse($inst->hasOption('new_option'));
+
+        $ref = new \ArrayObject([
+            'foo' => 'bar',
+        ]);
+        $inst->resetOptions();
+        $inst->setOptionsDefaults($ref, [
+            'bar' => 'baz',
+            'foo' => 'baz',
+        ]);
+        self::assertSame('bar', $inst->getOption('foo'));
+        self::assertSame('baz', $inst->getOption('bar'));
+        self::assertSame('bar', $ref['foo']);
+        self::assertSame('baz', $ref['bar']);
+
+        $ref = new \ArrayObject([
+            'foo' => [
+                'bar' => 'baz',
+            ],
+        ]);
+        $inst->resetOptions();
+        $inst->setOptionsDefaults($ref, [
+            'foo' => [
+                'baz' => 'bar',
+            ],
+        ]);
+        self::assertSame('bar', $inst->getOption('foo.baz'));
+        self::assertSame('baz', $inst->getOption('foo.bar'));
+
+        $ref = new \ArrayObject([
+            'foo' => 'bar',
+        ]);
+        $inst->resetOptions();
+        $inst->setOptionsRecursive($ref, [
+            'bar' => 'baz',
+            'foo' => 'baz',
+        ]);
+        self::assertSame('baz', $inst->getOption('foo'));
+        self::assertSame('baz', $inst->getOption('bar'));
+        self::assertSame('baz', $ref['foo']);
+        self::assertSame('baz', $ref['bar']);
     }
 
     /**

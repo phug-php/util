@@ -13,7 +13,7 @@ trait OptionTrait
     /**
      * @var ArrayObject
      */
-    protected $options = null;
+    private $options = null;
 
     /**
      * @var array
@@ -205,5 +205,10 @@ trait OptionTrait
     public function addOptionNameHandlers($handler)
     {
         $this->optionNameHandlers[] = $handler;
+    }
+
+    public function resetOptions()
+    {
+        $this->options = null;
     }
 }
