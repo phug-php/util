@@ -19,14 +19,15 @@ class SandBox
 
     public function __construct(callable $action)
     {
+        // @codeCoverageIgnoreStart
         try {
             $this->result = $action();
-        } /* @codeCoverageIgnoreStart */ catch (Throwable $throwable) { // PHP 7
+        } catch (Throwable $throwable) { // PHP 7
             $this->throwable = $throwable;
         } catch (Exception $exception) { // PHP 5
             $this->throwable = $exception;
         }
-        /* @codeCoverageIgnoreEnd */
+        // @codeCoverageIgnoreEnd
     }
 
     /**
