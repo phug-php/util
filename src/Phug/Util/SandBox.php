@@ -13,12 +13,18 @@ class SandBox
     private $result;
 
     /**
+     * @var string
+     */
+    private $buffer;
+
+    /**
      * @var Throwable
      */
     private $throwable;
 
     public function __construct(callable $action)
     {
+        ob_start();
         // @codeCoverageIgnoreStart
         try {
             $this->result = $action();
@@ -28,6 +34,8 @@ class SandBox
             $this->throwable = $exception;
         }
         // @codeCoverageIgnoreEnd
+        $this->buffer = ob_get_contents();
+        ob_end_clean();
     }
 
     /**
@@ -44,5 +52,20 @@ class SandBox
     public function getThrowable()
     {
         return $this->throwable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBuffer()
+    {
+        return $this->buffer;
+    }
+
+    public function outputBuffer()
+    {
+        echo $this->buffer;
+
+        $this->buffer = '';
     }
 }
