@@ -42,7 +42,6 @@ class SandBoxTest extends \PHPUnit_Framework_TestCase
         ob_end_clean();
 
         self::assertSame('', $contents);
-
     }
 
     /**
