@@ -63,9 +63,9 @@ interface SpecificModuleInterface extends ModuleInterface
 
 class FirstSpecificTestModule extends FirstTestModule implements SpecificModuleInterface
 {
-    public function handleStuff(EventInterface $e)
+    public function handleStuff(EventInterface $event)
     {
-        return "Payload was {$e->getParam('payload')}";
+        return "Payload was {$event->getParam('payload')}";
     }
 
     public function getEventListeners()
