@@ -63,6 +63,19 @@ class SandBoxTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Division by zero', $sandBox->getThrowable()->getMessage());
         self::assertSame(null, $sandBox->getResult());
         self::assertSame('foo', $sandBox->getBuffer());
+
+        $sandBox = new SandBox(function () {
+            return @implode('', '');
+        });
+
+        self::assertSame(null, $sandBox->getThrowable());
+
+        $sandBox = new SandBox(function () {
+            return implode('', '');
+        });
+
+        self::assertInstanceOf(Exception::class, $sandBox->getThrowable());
+        self::assertContains('implode', $sandBox->getThrowable()->getMessage());
     }
 }
 //@codingStandardsIgnoreEnd
