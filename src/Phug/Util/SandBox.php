@@ -25,7 +25,7 @@ class SandBox
 
     public function __construct(callable $action)
     {
-        set_error_handler(function($number, $message, $file, $line) {
+        set_error_handler(function ($number, $message, $file, $line) {
             if (0 === error_reporting()) {
                 return false;
             }
