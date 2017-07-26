@@ -2,6 +2,7 @@
 
 namespace Phug\Util;
 
+use ErrorException;
 use Exception;
 use Throwable;
 
@@ -24,6 +25,13 @@ class SandBox
 
     public function __construct(callable $action)
     {
+        set_error_handler(function($number, $message, $file, $line) {
+            if (0 === error_reporting()) {
+                return false;
+            }
+
+            throw new ErrorException($message, 0, $number, $file, $line);
+        });
         ob_start();
         // @codeCoverageIgnoreStart
         try {
@@ -36,6 +44,7 @@ class SandBox
         // @codeCoverageIgnoreEnd
         $this->buffer = ob_get_contents();
         ob_end_clean();
+        restore_error_handler();
     }
 
     /**
