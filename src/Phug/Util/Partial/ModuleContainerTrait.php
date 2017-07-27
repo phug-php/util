@@ -5,7 +5,6 @@ namespace Phug\Util\Partial;
 use Phug\EventManagerTrait;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\ModuleInterface;
-use SplObjectStorage;
 
 /**
  * Class ModuleContainerTrait.
