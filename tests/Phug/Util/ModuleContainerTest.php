@@ -52,6 +52,37 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
 
         self::assertTrue($container->hasModule(SecondTestModule::class));
         self::assertInstanceOf(SecondTestModule::class, $container->getModule(SecondTestModule::class));
+
+        $container = new MockModuleContainer();
+        $first = new FirstTestModule($container);
+        $second = new SecondTestModule($container);
+
+        self::assertSame(ModuleInterface::class, $container->getModuleBaseClassName());
+
+        self::assertFalse($container->hasModule($first));
+        self::assertFalse($container->hasModule($second));
+
+        self::assertSame($container, $container->addModule($first));
+
+        self::assertTrue($container->hasModule($first));
+        self::assertInstanceOf(FirstTestModule::class, $container->getModule($first));
+        self::assertFalse($container->hasModule($second));
+
+        self::assertSame($container, $container->removeModule($first));
+
+        self::assertFalse($container->hasModule($first));
+        self::assertFalse($container->hasModule($second));
+
+        self::assertSame($container, $container->addModules([
+            $first,
+            $second,
+        ]));
+
+        self::assertTrue($container->hasModule($first));
+        self::assertInstanceOf(FirstTestModule::class, $container->getModule($first));
+
+        self::assertTrue($container->hasModule($second));
+        self::assertInstanceOf(SecondTestModule::class, $container->getModule($second));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Phug\Util\Partial;
 use Phug\EventManagerTrait;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\ModuleInterface;
+use SplObjectStorage;
 
 /**
  * Class ModuleContainerTrait.
@@ -14,22 +15,41 @@ trait ModuleContainerTrait
     use EventManagerTrait, OptionTrait;
 
     /**
-     * @var ModuleInterface[]
+     * @var array<ModuleInterface>
      */
     private $modules = [];
 
-    public function hasModule($className)
+    public function hasModule($module)
     {
-        return isset($this->modules[$className]);
+        return $module instanceof ModuleInterface
+            ? in_array($module, $this->modules)
+            : isset($this->modules[$module]);
     }
 
-    public function getModule($className)
+    public function getModule($module)
     {
-        return $this->modules[$className];
+        return $module instanceof ModuleInterface
+            ? $module
+            : $this->modules[$module];
     }
 
-    public function addModule($className)
+    public function addModule($module)
     {
+        if ($module instanceof ModuleInterface) {
+            if (in_array($module, $this->modules)) {
+                throw new \InvalidArgumentException(
+                    'This occurrence of '.get_class($module).' is already registered.'
+                );
+            }
+
+            $this->modules[] = $module;
+
+            return $this;
+        }
+
+        /** @var string $className */
+        $className = $module;
+
         if (!is_subclass_of($className, $this->getModuleBaseClassName(), true)
             || !is_subclass_of($className, ModuleInterface::class)) {
             throw new \InvalidArgumentException(
@@ -59,17 +79,34 @@ trait ModuleContainerTrait
         return $this;
     }
 
-    public function addModules(array $classNames)
+    public function addModules(array $modules)
     {
-        foreach ($classNames as $className) {
-            $this->addModule($className);
+        foreach ($modules as $module) {
+            $this->addModule($module);
         }
 
         return $this;
     }
 
-    public function removeModule($className)
+    public function removeModule($module)
     {
+        if ($module instanceof ModuleInterface) {
+            if (!in_array($module, $this->modules)) {
+                throw new \InvalidArgumentException(
+                    'This occurrence of '.get_class($module).' is not registered.'
+                );
+            }
+
+            $this->modules = array_filter($this->modules, function ($instance) use ($module) {
+                return $instance !== $module;
+            });
+
+            return $this;
+        }
+
+        /** @var string $className */
+        $className = $module;
+
         if (!$this->hasModule($className)) {
             throw new \InvalidArgumentException(
                 'The container doesn\'t contain a '.$className.' module'
