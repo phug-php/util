@@ -76,6 +76,7 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
         self::assertSame($container, $container->addModules([
             $first,
             $second,
+            new FirstTestModule($container), // should not produce error
         ]));
 
         self::assertTrue($container->hasModule($first));
@@ -118,6 +119,39 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::getModuleBaseClassName
+     * @covers ::addModule
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage This occurrence of Phug\Test\Util\FirstTestModule is already registered.
+     */
+    public function testInstanceDoubleRegistration()
+    {
+        require_once __DIR__.'/MockModuleContainer.php';
+
+        $container = new MockModuleContainer();
+        self::assertSame(ModuleInterface::class, $container->getModuleBaseClassName());
+        $first = new FirstTestModule($container);
+        $container->addModule($first);
+        $container->addModule($first);
+    }
+
+    /**
+     * @covers ::getModuleBaseClassName
+     * @covers ::addModule
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage This occurrence of Phug\Test\Util\FirstTestModule is already registered in another module container.
+     */
+    public function testInstanceDivergentRegistrations()
+    {
+        require_once __DIR__.'/MockModuleContainer.php';
+
+        $container1 = new MockModuleContainer();
+        $container2 = new MockModuleContainer();
+        $first = new FirstTestModule($container1);
+        $container2->addModule($first);
+    }
+
+    /**
+     * @covers ::getModuleBaseClassName
      * @covers ::removeModule
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The container doesn't contain a Phug\Test\Util\FirstTestModule module
@@ -130,6 +164,23 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
         self::assertSame(ModuleInterface::class, $container->getModuleBaseClassName());
         self::assertFalse($container->hasModule(FirstTestModule::class));
         $container->removeModule(FirstTestModule::class);
+    }
+
+    /**
+     * @covers ::getModuleBaseClassName
+     * @covers ::removeModule
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage This occurrence of Phug\Test\Util\FirstTestModule is not registered.
+     */
+    public function testRemovalOfNonExistentModuleInstance()
+    {
+        require_once __DIR__.'/MockModuleContainer.php';
+
+        $container = new MockModuleContainer();
+        $first = new FirstTestModule($container);
+        self::assertSame(ModuleInterface::class, $container->getModuleBaseClassName());
+        self::assertFalse($container->hasModule($first));
+        $container->removeModule($first);
     }
 
     /**

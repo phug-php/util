@@ -40,7 +40,13 @@ trait ModuleContainerTrait
                     'This occurrence of '.get_class($module).' is already registered.'
                 );
             }
+            if ($module->getContainer() !== $this) {
+                throw new \InvalidArgumentException(
+                    'This occurrence of '.get_class($module).' is already registered in another module container.'
+                );
+            }
 
+            $module->attachEvents();
             $this->modules[] = $module;
 
             return $this;
