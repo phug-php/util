@@ -10,6 +10,10 @@ interface ModuleContainerInterface extends EventManagerInterface, OptionInterfac
 
     public function getModule($className);
 
+    public function getModules();
+
+    public function getStaticModules();
+
     public function addModule($className);
 
     public function addModules(array $classNames);

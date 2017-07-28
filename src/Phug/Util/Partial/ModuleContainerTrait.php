@@ -18,6 +18,11 @@ trait ModuleContainerTrait
      */
     private $modules = [];
 
+    /**
+     * @param string|ModuleInterface $module
+     *
+     * @return bool
+     */
     public function hasModule($module)
     {
         return $module instanceof ModuleInterface
@@ -25,6 +30,11 @@ trait ModuleContainerTrait
             : isset($this->modules[$module]);
     }
 
+    /**
+     * @param string|ModuleInterface $module
+     *
+     * @return ModuleInterface
+     */
     public function getModule($module)
     {
         return $module instanceof ModuleInterface
@@ -32,6 +42,29 @@ trait ModuleContainerTrait
             : $this->modules[$module];
     }
 
+    /**
+     * @return array<ModuleInterface>
+     */
+    public function getModules()
+    {
+        return array_values($this->modules);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getStaticModules()
+    {
+        return array_filter(array_keys($this->modules), function ($key) {
+            return is_string($key);
+        });
+    }
+
+    /**
+     * @param string|ModuleInterface $module
+     *
+     * @return $this
+     */
     public function addModule($module)
     {
         if ($module instanceof ModuleInterface) {
@@ -84,6 +117,11 @@ trait ModuleContainerTrait
         return $this;
     }
 
+    /**
+     * @param array<string|ModuleInterface> $modules
+     *
+     * @return $this
+     */
     public function addModules(array $modules)
     {
         foreach ($modules as $module) {
@@ -93,6 +131,11 @@ trait ModuleContainerTrait
         return $this;
     }
 
+    /**
+     * @param string|ModuleInterface $module
+     *
+     * @return $this
+     */
     public function removeModule($module)
     {
         if ($module instanceof ModuleInterface) {
@@ -124,6 +167,9 @@ trait ModuleContainerTrait
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getModuleBaseClassName()
     {
         return ModuleInterface::class;
