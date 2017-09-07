@@ -10,10 +10,11 @@ engines:
     enabled: true
   phpmd:
     enabled: true
-    # For unused methods, check the coverage instead
-    # Several methods called dynamically are detected as unused
-    UnusedPrivateMethod:
-      enabled: false
+    checks:
+      # For unused methods, check the coverage instead
+      # Several methods called dynamically are detected as unused
+      UnusedPrivateMethod:
+        enabled: false
 
 ratings:
   paths:

@@ -18,6 +18,8 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
      * @covers ::addModules
      * @covers ::hasModule
      * @covers ::getModule
+     * @covers ::getModules
+     * @covers ::getStaticModules
      * @covers ::removeModule
      */
     public function testHasGetSetRemoveModule()
@@ -42,16 +44,23 @@ class ModuleContainerTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($container->hasModule(FirstTestModule::class));
         self::assertFalse($container->hasModule(SecondTestModule::class));
 
-        self::assertSame($container, $container->addModules([
+        $staticModules = [
             FirstTestModule::class,
             SecondTestModule::class,
-        ]));
+        ];
+        self::assertSame($container, $container->addModules($staticModules));
+        self::assertSame($staticModules, $container->getStaticModules());
 
         self::assertTrue($container->hasModule(FirstTestModule::class));
         self::assertInstanceOf(FirstTestModule::class, $container->getModule(FirstTestModule::class));
 
         self::assertTrue($container->hasModule(SecondTestModule::class));
         self::assertInstanceOf(SecondTestModule::class, $container->getModule(SecondTestModule::class));
+
+        $modules = $container->getModules();
+        self::assertCount(2, $modules);
+        self::assertInstanceOf(FirstTestModule::class, $modules[0]);
+        self::assertInstanceOf(SecondTestModule::class, $modules[1]);
 
         $container = new MockModuleContainer();
         $first = new FirstTestModule($container);
