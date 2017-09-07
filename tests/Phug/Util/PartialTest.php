@@ -33,6 +33,7 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
     use Partial\ScopeTrait;
     use Partial\SubjectTrait;
     use Partial\ValueTrait;
+    use Partial\VariadicTrait;
     use Partial\VisibleTrait;
 
     /**
@@ -354,6 +355,23 @@ class PartialTest extends \PHPUnit_Framework_TestCase
 
         $inst->show();
         self::assertTrue($inst->isVisible(), 'show');
+    }
+
+    /**
+     * @covers \Phug\Util\Partial\VariadicTrait
+     * @covers \Phug\Util\Partial\VariadicTrait::isVariadic
+     * @covers \Phug\Util\Partial\VariadicTrait::setIsVisible
+     */
+    public function testVariadicTrait()
+    {
+        $inst = new TestClass();
+        self::assertFalse($inst->isVariadic());
+
+        $inst->setIsVariadic(true);
+        self::assertTrue($inst->isVariadic(), 'setIsVariadic(true)');
+
+        $inst->setIsVariadic(false);
+        self::assertFalse($inst->isVariadic(), 'setIsVariadic(false)');
     }
 
     /**
