@@ -1,23 +1,23 @@
 
 engines:
-    duplication:
-        enabled: true
-        config:
-            languages:
-                - php
-        exclude_fingerprints:
-            - d9f507bcb76f47e266bcd9eda4bfe683
-            - 56be3a885076afe8178c6269d120a2cb
-            - c2d6d4194cb127e47afc5b3987000c33
-    fixme:
-        enabled: true
-    phpmd:
-        enabled: true
-
+  duplication:
+    enabled: true
+    config:
+      languages:
+        php:
+          mass_threshold: 40
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    # For unused methods, check the coverage instead
+    # Several methods called dynamically are detected as unused
+    UnusedPrivateMethod:
+      enabled: false
 
 ratings:
-    paths:
-        - "**.php"
+  paths:
+  - "**.php"
 
 exclude_paths:
-    - tests/
+- tests/
