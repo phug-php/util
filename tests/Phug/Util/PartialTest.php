@@ -360,7 +360,7 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Phug\Util\Partial\VariadicTrait
      * @covers \Phug\Util\Partial\VariadicTrait::isVariadic
-     * @covers \Phug\Util\Partial\VariadicTrait::setIsVisible
+     * @covers \Phug\Util\Partial\VariadicTrait::setIsVariadic
      */
     public function testVariadicTrait()
     {
