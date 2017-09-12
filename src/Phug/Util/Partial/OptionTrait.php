@@ -63,9 +63,11 @@ trait OptionTrait
         $options = $this->getOptions();
         foreach ($this->filterTraversable($arrays) as $array) {
             foreach ($array as $key => $value) {
-                $options[$key] = isset($options[$key]) && is_array($options[$key]) && is_array($value)
-                    ? $functionName($options[$key], $value)
-                    : $value;
+                $this->withVariableReference($options, $key, function (&$base, $name) use ($functionName, $value) {
+                    $base[$name] = isset($base[$name]) && is_array($base[$name]) && is_array($value)
+                        ? $functionName($base[$name], $value)
+                        : $value;
+                });
             }
         }
 
@@ -130,6 +132,29 @@ trait OptionTrait
     }
 
     /**
+     * @param mixed        $variable
+     * @param array|string $keys
+     * @param callable     $callback
+     *
+     * @return &$options
+     */
+    private function withVariableReference(&$variable, $name, $callback)
+    {
+        $keys = $this->handleOptionName($name);
+        if (is_array($keys)) {
+            foreach (array_slice($keys, 0, -1) as $key) {
+                if (!array_key_exists($key, $variable)) {
+                    $variable[$key] = [];
+                }
+                $variable = &$variable[$key];
+            }
+            $name = end($keys);
+        }
+
+        return $callback($variable, $name);
+    }
+
+    /**
      * @param array|string $keys
      * @param callable     $callback
      *
@@ -140,19 +165,8 @@ trait OptionTrait
         if (!$this->options) {
             $this->options = new ArrayObject();
         }
-        $options = $this->options;
-        $keys = $this->handleOptionName($name);
-        if (is_array($keys)) {
-            foreach (array_slice($keys, 0, -1) as $key) {
-                if (!array_key_exists($key, $options)) {
-                    $options[$key] = [];
-                }
-                $options = &$options[$key];
-            }
-            $name = end($keys);
-        }
 
-        return $callback($options, $name);
+        return $this->withVariableReference($this->options, $name, $callback);
     }
 
     /**
