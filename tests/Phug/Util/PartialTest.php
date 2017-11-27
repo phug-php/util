@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Util;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Util\DocumentLocationInterface;
 use Phug\Util\Exception\LocatedException;
 use Phug\Util\OptionInterface;
@@ -56,7 +57,7 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
 /**
  * Class PartialTest.
  */
-class PartialTest extends \PHPUnit_Framework_TestCase
+class PartialTest extends TestCase
 {
     /**
      * @covers \Phug\Util\Partial\AssignmentTrait
@@ -540,14 +541,14 @@ class PartialTest extends \PHPUnit_Framework_TestCase
     public function testScopeTrait()
     {
         $inst = new TestClass();
-        self::assertSame(null, $inst->getScopeId());
+        self::assertNull($inst->getScopeId());
 
         $foo = new stdClass();
         $inst->setScope($foo);
         self::assertSame(spl_object_hash($foo), $inst->getScopeId());
 
         $inst->setScope(null);
-        self::assertSame(null, $inst->getScopeId());
+        self::assertNull($inst->getScopeId());
     }
 
     /**

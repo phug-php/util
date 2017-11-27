@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Util;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Util\ModuleInterface;
 use stdClass;
 
@@ -10,7 +11,7 @@ use stdClass;
 /**
  * @coversDefaultClass Phug\Util\Partial\ModuleContainerTrait
  */
-class ModuleContainerTest extends \PHPUnit_Framework_TestCase
+class ModuleContainerTest extends TestCase
 {
     /**
      * @covers ::getModuleBaseClassName

@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Util;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Util\AssociativeStorage;
 use Phug\Util\Partial\NameTrait;
 
@@ -15,7 +16,7 @@ class Entity
  *
  * @coversDefaultClass Phug\Util\AssociativeStorage
  */
-class AssociativeStorageTest extends \PHPUnit_Framework_TestCase
+class AssociativeStorageTest extends TestCase
 {
     /**
      * @covers                   ::<public>

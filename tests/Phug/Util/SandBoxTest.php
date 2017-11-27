@@ -4,12 +4,13 @@ namespace Phug\Test\Util;
 
 //@codingStandardsIgnoreStart
 use Exception;
+use PHPUnit\Framework\TestCase;
 use Phug\Util\SandBox;
 
 /**
  * @coversDefaultClass Phug\Util\SandBox
  */
-class SandBoxTest extends \PHPUnit_Framework_TestCase
+class SandBoxTest extends TestCase
 {
     /**
      * @covers ::__construct
@@ -25,7 +26,7 @@ class SandBoxTest extends \PHPUnit_Framework_TestCase
             return 'foo';
         });
 
-        self::assertSame(null, $sandBox->getThrowable());
+        self::assertNull($sandBox->getThrowable());
         self::assertSame('foo', $sandBox->getResult());
         self::assertSame('bar', $sandBox->getBuffer());
 
@@ -61,14 +62,14 @@ class SandBoxTest extends \PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(Exception::class, $sandBox->getThrowable());
         self::assertContains('Division by zero', $sandBox->getThrowable()->getMessage());
-        self::assertSame(null, $sandBox->getResult());
+        self::assertNull($sandBox->getResult());
         self::assertSame('foo', $sandBox->getBuffer());
 
         $sandBox = new SandBox(function () {
             return @implode('', '');
         });
 
-        self::assertSame(null, $sandBox->getThrowable());
+        self::assertNull($sandBox->getThrowable());
 
         $sandBox = new SandBox(function () {
             return implode('', '');

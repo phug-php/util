@@ -2,12 +2,14 @@
 
 namespace Phug\Test\Util;
 
+use PHPUnit\Framework\TestCase;
+
 //@codingStandardsIgnoreStart
 
 /**
  * @coversDefaultClass Phug\Util\AbstractModule
  */
-class ModuleTest extends \PHPUnit_Framework_TestCase
+class ModuleTest extends TestCase
 {
     /**
      * @covers ::__construct

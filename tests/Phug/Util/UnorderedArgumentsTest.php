@@ -2,6 +2,7 @@
 
 namespace Phug\Test\Util;
 
+use PHPUnit\Framework\TestCase;
 use Phug\Util\UnorderedArguments;
 
 //@codingStandardsIgnoreStart
@@ -16,7 +17,7 @@ class Def implements Abc
  *
  * @coversDefaultClass Phug\Util\UnorderedArguments
  */
-class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
+class UnorderedArgumentsTest extends TestCase
 {
     /**
      * @covers ::__construct
@@ -27,7 +28,7 @@ class UnorderedArgumentsTest extends \PHPUnit_Framework_TestCase
         $arguments = new UnorderedArguments(['foo', 42]);
 
         self::assertSame(42, $arguments->optional('integer'));
-        self::assertSame(null, $arguments->optional('array'));
+        self::assertNull($arguments->optional('array'));
         self::assertSame('foo', $arguments->optional('string'));
     }
 
