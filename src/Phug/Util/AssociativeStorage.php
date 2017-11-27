@@ -97,7 +97,7 @@ class AssociativeStorage extends SplObjectStorage
         return $this;
     }
 
-    private function attachStrictMode(AssociativeStorage $storage, $entity)
+    private function attachStrictMode(self $storage, $entity)
     {
         if ($storage->isDuplicateEntity($entity)) {
             throw new InvalidArgumentException(
@@ -109,7 +109,7 @@ class AssociativeStorage extends SplObjectStorage
         return true;
     }
 
-    private function attachReplaceMode(AssociativeStorage $storage, $entity)
+    private function attachReplaceMode(self $storage, $entity)
     {
         foreach ($storage->findAllByName($storage->identifyEntity($entity)) as $duplicate) {
             $storage->detach($duplicate);
@@ -118,7 +118,7 @@ class AssociativeStorage extends SplObjectStorage
         return true;
     }
 
-    private function attachIgnoreMode(AssociativeStorage $storage, $entity)
+    private function attachIgnoreMode(self $storage, $entity)
     {
         return !$storage->isDuplicateEntity($entity);
     }
