@@ -3,6 +3,7 @@
 namespace Phug\Test\Util;
 
 //@codingStandardsIgnoreStart
+use ErrorException;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Phug\Util\SandBox;
@@ -77,6 +78,39 @@ class SandBoxTest extends TestCase
 
         self::assertInstanceOf(Exception::class, $sandBox->getThrowable());
         self::assertContains('implode', $sandBox->getThrowable()->getMessage());
+
+        $level = error_reporting();
+
+        error_reporting(E_ALL);
+        $sandBox = new SandBox(function () {
+            $a = [];
+            $b = $a['foo'];
+        });
+
+        self::assertInstanceOf(ErrorException::class, $sandBox->getThrowable());
+
+        error_reporting(E_ALL ^ E_NOTICE);
+
+        $sandBox = new SandBox(function () {
+            $a = [];
+            $b = $a['foo'];
+        });
+
+        self::assertNull($sandBox->getThrowable());
+
+        error_reporting(E_ALL);
+
+        $sandBox = new SandBox(function () {
+            $a = [];
+            $b = $a['foo'];
+        }, function ($number, $message, $file, $line) {
+            throw new ErrorException('interceptor', $number);
+        });
+
+        self::assertSame('interceptor', $sandBox->getThrowable()->getMessage());
+        self::assertSame(E_NOTICE, $sandBox->getThrowable()->getCode());
+
+        error_reporting($level);
     }
 }
 //@codingStandardsIgnoreEnd
