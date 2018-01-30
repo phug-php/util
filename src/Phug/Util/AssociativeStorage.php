@@ -135,7 +135,7 @@ class AssociativeStorage extends SplObjectStorage
 
     public function isDuplicateEntity($entity)
     {
-        return count($this->findAllByName($this->identifyEntity($entity))) !== 0;
+        return iterator_count($this->findAllByName($this->identifyEntity($entity))) !== 0;
     }
 
     public function attach($object, $data = null)
@@ -149,17 +149,19 @@ class AssociativeStorage extends SplObjectStorage
 
     public function findAllByName($name)
     {
-        $assignments = iterator_to_array($this);
-
-        return array_values(array_filter($assignments, function ($entity) use ($name) {
-            return $this->identifyEntity($entity) === $name;
-        }));
+        foreach ($this as $entity) {
+            if ($this->identifyEntity($entity) === $name) {
+                yield $entity;
+            }
+        }
     }
 
     public function findFirstByName($name)
     {
-        $entities = $this->findAllByName($name);
+        foreach ($this->findAllByName($name) as $entity) {
+            return $entity;
+        }
 
-        return count($entities) ? $entities[0] : null;
+        return null;
     }
 }

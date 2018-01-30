@@ -65,7 +65,7 @@ class AssociativeStorageTest extends TestCase
         $storage->attach($a);
         $storage->attach($b);
 
-        self::assertSame(1, count($storage->findAllByName('foo')));
+        self::assertSame(1, iterator_count($storage->findAllByName('foo')));
         self::assertSame($b, $storage->findFirstByName('foo'));
 
         $storage = new AssociativeStorage('bar', AssociativeStorage::IGNORE);
@@ -77,7 +77,7 @@ class AssociativeStorageTest extends TestCase
         $storage->attach($a);
         $storage->attach($b);
 
-        self::assertSame(1, count($storage->findAllByName('foo')));
+        self::assertSame(1, iterator_count($storage->findAllByName('foo')));
         self::assertSame($a, $storage->findFirstByName('foo'));
 
         $storage = new AssociativeStorage('bar', AssociativeStorage::ALL);
@@ -89,7 +89,7 @@ class AssociativeStorageTest extends TestCase
         $storage->attach($a);
         $storage->attach($b);
 
-        self::assertSame(2, count($storage->findAllByName('foo')));
+        self::assertSame(2, iterator_count($storage->findAllByName('foo')));
         self::assertSame($a, $storage->findFirstByName('foo'));
     }
 
@@ -123,7 +123,7 @@ class AssociativeStorageTest extends TestCase
         $storage->attach($b);
         $storage->attach($c);
 
-        self::assertSame(1, count($storage->findAllByName('foo')));
+        self::assertSame(1, iterator_count($storage->findAllByName('foo')));
         self::assertSame($b, $storage->findFirstByName('foo'));
     }
 }
