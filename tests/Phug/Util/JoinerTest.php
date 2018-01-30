@@ -22,7 +22,6 @@ class JoinerTest extends TestCase
      * @covers ::__construct
      * @covers ::join
      * @covers ::mapAndJoin
-     * @covers ::outputBuffer
      */
     public function testSuccess()
     {
