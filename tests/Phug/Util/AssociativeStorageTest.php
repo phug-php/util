@@ -91,6 +91,7 @@ class AssociativeStorageTest extends TestCase
 
         self::assertSame(2, iterator_count($storage->findAllByName('foo')));
         self::assertSame($a, $storage->findFirstByName('foo'));
+        self::assertnull($storage->findFirstByName('fooBarBiz'));
     }
 
     /**
