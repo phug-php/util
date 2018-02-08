@@ -71,7 +71,6 @@ class MacroableOptionTestClass implements OptionInterface
     }
 }
 
-
 class MacroableTraitTest extends TestCase
 {
     /**
@@ -128,6 +127,7 @@ class MacroableTraitTest extends TestCase
 
         self::assertSame('ABC', $inst->upper('abc'));
     }
+
     /**
      * @covers                   \Phug\Util\Partial\MacroableTrait::__call
      * @expectedException        \BadMethodCallException
