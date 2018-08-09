@@ -66,7 +66,7 @@ class UnorderedArgumentsTest extends TestCase
         $arguments = new UnorderedArguments(['foo']);
 
         $arguments->optional('string');
-        $arguments->noMoreArguments();
+        $this->assertNull($arguments->noMoreArguments());
     }
 
     /**

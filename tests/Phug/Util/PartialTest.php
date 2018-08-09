@@ -151,7 +151,6 @@ class PartialTest extends TestCase
     }
 
     /**
-     * @covers \Phug\Util\DocumentLocationInterface
      * @covers \Phug\Util\Partial\DocumentLocationTrait
      * @covers \Phug\Util\Partial\LineGetTrait
      * @covers \Phug\Util\Partial\LineGetTrait::getLine
@@ -376,7 +375,6 @@ class PartialTest extends TestCase
     }
 
     /**
-     * @covers \Phug\Util\OptionInterface
      * @covers \Phug\Util\Partial\OptionTrait
      * @covers \Phug\Util\Partial\OptionTrait::setOptionArrays
      * @covers \Phug\Util\Partial\OptionTrait::handleOptionName
@@ -533,7 +531,6 @@ class PartialTest extends TestCase
     }
 
     /**
-     * @covers \Phug\Util\ScopeInterface
      * @covers \Phug\Util\Partial\ScopeTrait
      * @covers \Phug\Util\Partial\ScopeTrait::setScope
      * @covers \Phug\Util\Partial\ScopeTrait::getScopeId
@@ -552,7 +549,6 @@ class PartialTest extends TestCase
     }
 
     /**
-     * @covers \Phug\Util\SourceLocationInterface
      * @covers \Phug\Util\SourceLocation
      * @covers \Phug\Util\SourceLocation::getPath
      * @covers \Phug\Util\SourceLocation::getLine
