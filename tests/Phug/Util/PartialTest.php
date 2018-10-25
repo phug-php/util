@@ -39,18 +39,26 @@ class TestClass implements DocumentLocationInterface, OptionInterface, ScopeInte
 
     /**
      * @param int $line
+     *
+     * @return $this
      */
     public function setLine($line)
     {
         $this->line = $line;
+
+        return $this;
     }
 
     /**
      * @param int $offset
+     *
+     * @return $this
      */
     public function setOffset($offset)
     {
         $this->offset = $offset;
+
+        return $this;
     }
 }
 
@@ -101,10 +109,10 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertFalse($inst->isBlock(), 'after ctor');
 
-        $inst->setIsBlock(true);
+        self::assertSame($inst, $inst->setIsBlock(true));
         self::assertTrue($inst->isBlock(), 'setIsBlock(true)');
 
-        $inst->setIsBlock(false);
+        self::assertSame($inst, $inst->setIsBlock(false));
         self::assertFalse($inst->isBlock(), 'setIsBlock(false)');
     }
 
@@ -120,16 +128,16 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertTrue($inst->isChecked());
 
-        $inst->setIsChecked(false);
+        self::assertSame($inst, $inst->setIsChecked(false));
         self::assertFalse($inst->isChecked(), 'setIsChecked(false)');
 
-        $inst->setIsChecked(true);
+        self::assertSame($inst, $inst->setIsChecked(true));
         self::assertTrue($inst->isChecked(), 'setIsChecked(true)');
 
-        $inst->uncheck();
+        self::assertSame($inst, $inst->uncheck());
         self::assertFalse($inst->isChecked(), 'uncheck');
 
-        $inst->check();
+        self::assertSame($inst, $inst->check());
         self::assertTrue($inst->isChecked(), 'check');
     }
 
@@ -143,10 +151,10 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertFalse($inst->isRest());
 
-        $inst->setIsRest(true);
+        self::assertSame($inst, $inst->setIsRest(true));
         self::assertTrue($inst->isRest(), 'setIsRest(true)');
 
-        $inst->setIsRest(false);
+        self::assertSame($inst, $inst->setIsRest(false));
         self::assertFalse($inst->isRest(), 'setIsRest(false)');
     }
 
@@ -163,10 +171,10 @@ class PartialTest extends TestCase
         self::assertNull($inst->getLine());
         self::assertNull($inst->getOffset());
 
-        $inst->setLine(15);
+        self::assertSame($inst, $inst->setLine(15));
         self::assertSame(15, $inst->getLine(), 'getLine()');
 
-        $inst->setOffset(23);
+        self::assertSame($inst, $inst->setOffset(23));
         self::assertSame(23, $inst->getOffset(), 'getOffset()');
     }
 
@@ -181,7 +189,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertSame(0, $inst->getLevel());
 
-        $inst->setLevel(101);
+        self::assertSame($inst, $inst->setLevel(101));
         self::assertSame(101, $inst->getLevel());
     }
 
@@ -197,16 +205,16 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertFalse($inst->isEscaped());
 
-        $inst->setIsEscaped(true);
+        self::assertSame($inst, $inst->setIsEscaped(true));
         self::assertTrue($inst->isEscaped(), 'setIsEscaped(true)');
 
-        $inst->setIsEscaped(false);
+        self::assertSame($inst, $inst->setIsEscaped(false));
         self::assertFalse($inst->isEscaped(), 'setIsEscaped(false)');
 
-        $inst->escape();
+        self::assertSame($inst, $inst->escape());
         self::assertTrue($inst->isEscaped(), 'escape');
 
-        $inst->unescape();
+        self::assertSame($inst, $inst->unescape());
         self::assertFalse($inst->isEscaped(), 'unescape');
     }
 
@@ -220,7 +228,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getFilter());
 
-        $inst->setFilter('test filter');
+        self::assertSame($inst, $inst->setFilter('test filter'));
         self::assertSame('test filter', $inst->getFilter());
     }
 
@@ -234,7 +242,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getMode());
 
-        $inst->setMode('test mode');
+        self::assertSame($inst, $inst->setMode('test mode'));
         self::assertSame('test mode', $inst->getMode());
     }
 
@@ -248,7 +256,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getName());
 
-        $inst->setName('test name');
+        self::assertSame($inst, $inst->setName('test name'));
         self::assertSame('test name', $inst->getName());
     }
 
@@ -265,10 +273,10 @@ class PartialTest extends TestCase
         self::assertNull($inst->getKey());
         self::assertNull($inst->getValue());
 
-        $inst->setKey('test key');
+        self::assertSame($inst, $inst->setKey('test key'));
         self::assertSame('test key', $inst->getKey());
 
-        $inst->setItem('test item');
+        self::assertSame($inst, $inst->setItem('test item'));
         self::assertSame('test item', $inst->getItem());
     }
 
@@ -282,7 +290,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getPath());
 
-        $inst->setPath('test path');
+        self::assertSame($inst, $inst->setPath('test path'));
         self::assertSame('test path', $inst->getPath());
     }
 
@@ -296,7 +304,7 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getSubject());
 
-        $inst->setSubject('test subject');
+        self::assertSame($inst, $inst->setSubject('test subject'));
         self::assertSame('test subject', $inst->getSubject());
     }
 
@@ -312,23 +320,23 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertNull($inst->getValue());
 
-        $inst->setValue('test value');
+        self::assertSame($inst, $inst->setValue('test value'));
         self::assertSame('test value', $inst->getValue());
 
         self::assertFalse($inst->hasStaticValue());
-        $inst->setValue('$foo');
+        self::assertSame($inst, $inst->setValue('$foo'));
         self::assertFalse($inst->hasStaticValue());
-        $inst->setValue([]);
+        self::assertSame($inst, $inst->setValue([]));
         self::assertFalse($inst->hasStaticValue());
 
-        $inst->setValue('0x54');
+        self::assertSame($inst, $inst->setValue('0x54'));
         self::assertTrue($inst->hasStaticValue());
-        $inst->setValue('"foo"');
+        self::assertSame($inst, $inst->setValue('"foo"'));
         self::assertTrue($inst->hasStaticValue());
 
-        $inst->setName('"foo"');
+        self::assertSame($inst, $inst->setName('"foo"'));
         self::assertTrue($inst->hasStaticMember('name'));
-        $inst->setName('"$foo"');
+        self::assertSame($inst, $inst->setName('"$foo"'));
         self::assertFalse($inst->hasStaticMember('name'));
     }
 
@@ -344,16 +352,16 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertTrue($inst->isVisible());
 
-        $inst->setIsVisible(false);
+        self::assertSame($inst, $inst->setIsVisible(false));
         self::assertFalse($inst->isVisible(), 'setIsVisible(false)');
 
-        $inst->setIsVisible(true);
+        self::assertSame($inst, $inst->setIsVisible(true));
         self::assertTrue($inst->isVisible(), 'setIsVisible(true)');
 
-        $inst->hide();
+        self::assertSame($inst, $inst->hide());
         self::assertFalse($inst->isVisible(), 'hide');
 
-        $inst->show();
+        self::assertSame($inst, $inst->show());
         self::assertTrue($inst->isVisible(), 'show');
     }
 
@@ -367,10 +375,10 @@ class PartialTest extends TestCase
         $inst = new TestClass();
         self::assertFalse($inst->isVariadic());
 
-        $inst->setIsVariadic(true);
+        self::assertSame($inst, $inst->setIsVariadic(true));
         self::assertTrue($inst->isVariadic(), 'setIsVariadic(true)');
 
-        $inst->setIsVariadic(false);
+        self::assertSame($inst, $inst->setIsVariadic(false));
         self::assertFalse($inst->isVariadic(), 'setIsVariadic(false)');
     }
 
@@ -427,7 +435,7 @@ class PartialTest extends TestCase
             ],
         ];
 
-        $inst->setOptions($options);
+        self::assertSame($inst, $inst->setOptions($options));
         self::assertSame($options, (array) $inst->getOptions(), '$options === $inst->getOptions()');
         self::assertTrue($inst->hasOption('b'), '$inst->hasOption(b)');
         self::assertTrue(isset($inst->getOption('b')['c']), '$inst->hasOption([b, c])');
@@ -443,7 +451,7 @@ class PartialTest extends TestCase
         $cloned->setOptions([], null, $anotherFlatOptions);
         self::assertSame(3, $cloned->getOption('a'), '$cloned->getOption(a) === 3 (thrid argument)');
 
-        $inst->setOptionsRecursive($options, $deepOptions);
+        self::assertSame($inst, $inst->setOptionsRecursive($options, $deepOptions));
         self::assertSame(['c' => 3, 'd' => 3, 'e' => 4], $inst->getOption('b'), '$inst->getOption(b) (deep)');
 
         $inst->setOptionsRecursive([], $anotherDeepOptions);
@@ -476,9 +484,9 @@ class PartialTest extends TestCase
         $inst->setOption('fooBar', 'b');
         self::assertSame('b', $inst->getOption('foo_bar'), '$inst->getOption(foo_bar) === b');
 
-        $inst->setOptionsDefaults([
+        self::assertSame($inst, $inst->setOptionsDefaults([
             'new_option' => 3,
-        ]);
+        ]));
         self::assertSame(3, $inst->getOption('new_option'), '$inst->getOption(new_option) === 3');
         $inst->setOptionsDefaults([
             'new_option' => 79,
@@ -541,10 +549,10 @@ class PartialTest extends TestCase
         self::assertNull($inst->getScopeId());
 
         $foo = new stdClass();
-        $inst->setScope($foo);
+        self::assertSame($inst, $inst->setScope($foo));
         self::assertSame(spl_object_hash($foo), $inst->getScopeId());
 
-        $inst->setScope(null);
+        self::assertSame($inst, $inst->setScope(null));
         self::assertNull($inst->getScopeId());
     }
 
@@ -574,7 +582,7 @@ class PartialTest extends TestCase
 
         self::assertSame(0, $inst->getOffsetLength());
 
-        $inst->setOffsetLength(9);
+        self::assertSame($inst, $inst->setOffsetLength(9));
 
         self::assertSame(9, $inst->getOffsetLength());
 
