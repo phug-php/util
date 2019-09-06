@@ -2,6 +2,7 @@
 
 namespace Phug\Util\Partial;
 
+use ArrayAccess;
 use ArrayObject;
 use Traversable;
 
@@ -175,7 +176,11 @@ trait OptionTrait
     public function hasOption($name)
     {
         return $this->withOptionReference($name, function (&$options, $name) {
-            return $this->isTraversable($options) && array_key_exists($name, $options);
+            if (is_array($options) || $options instanceof ArrayAccess) {
+                return array_key_exists($name, $options);
+            }
+
+            return is_object($options) && property_exists($options, $name);
         });
     }
 
