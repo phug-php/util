@@ -144,7 +144,10 @@ trait OptionTrait
         $keys = $this->handleOptionName($name);
         if (is_array($keys)) {
             foreach (array_slice($keys, 0, -1) as $key) {
-                if (!array_key_exists($key, $variable)) {
+                if (
+                    is_array($variable) && !array_key_exists($key, $variable) ||
+                    $variable instanceof ArrayAccess && !$variable->offsetExists($key)
+                ) {
                     $variable[$key] = [];
                 }
                 $variable = &$variable[$key];
