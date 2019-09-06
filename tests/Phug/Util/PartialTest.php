@@ -441,7 +441,7 @@ class PartialTest extends TestCase
         self::assertTrue(isset($inst->getOption('b')['c']), '$inst->hasOption([b, c])');
         self::assertFalse($inst->hasOption('unknown'), '$inst->hasOption(unknown)');
         self::assertFalse($inst->hasOption(['unknown', 'unknown']), '$inst->hasOption([unknown, unknown])');
-        self::assertFalse(isset($inst->getOption('b')['unknown']), '$inst->hasOption([b, unknown])');
+        self::assertFalse(isset($inst->getOption('b')['unknown']), '$inst->getOption(\'b\')[\'unknown\']');
         self::assertSame(['c' => 2, 'd' => 3], $inst->getOption('b'), '$options[b] === $inst->getOption(b)');
 
         $cloned = clone $inst;
@@ -536,6 +536,19 @@ class PartialTest extends TestCase
         self::assertSame('baz', $inst->getOption('bar'));
         self::assertSame('baz', $ref['foo']);
         self::assertSame('baz', $ref['bar']);
+
+        $ref = (object) [
+            'foo' => 'bar',
+            'bar' => (object) [
+                'foo' => 'biz',
+            ],
+        ];
+        $inst->resetOptions();
+        $inst->setOptionsRecursive($ref);
+        self::assertTrue($inst->hasOption('foo'));
+        self::assertSame('bar', $inst->getOption('foo'));
+        self::assertTrue($inst->hasOption(['bar', 'foo']));
+        self::assertSame('biz', $inst->getOption(['bar', 'foo']));
     }
 
     /**

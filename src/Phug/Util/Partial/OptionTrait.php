@@ -176,7 +176,11 @@ trait OptionTrait
     public function hasOption($name)
     {
         return $this->withOptionReference($name, function (&$options, $name) {
-            if (is_array($options) || $options instanceof ArrayAccess) {
+            if ($options instanceof ArrayAccess) {
+                return $options->offsetExists($name);
+            }
+
+            if (is_array($options)) {
                 return array_key_exists($name, $options);
             }
 
@@ -190,7 +194,9 @@ trait OptionTrait
     public function getOption($name)
     {
         return $this->withOptionReference($name, function (&$options, $name) {
-            return $options[$name];
+            return is_array($options) || $options instanceof ArrayAccess
+                ? $options[$name]
+                : $options->$name;
         });
     }
 
