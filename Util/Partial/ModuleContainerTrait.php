@@ -2,6 +2,7 @@
 
 namespace Phug\Util\Partial;
 
+use InvalidArgumentException;
 use Phug\EventManagerTrait;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\ModuleInterface;
@@ -69,12 +70,13 @@ trait ModuleContainerTrait
     {
         if ($module instanceof ModuleInterface) {
             if (in_array($module, $this->modules)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'This occurrence of '.get_class($module).' is already registered.'
                 );
             }
+
             if ($module->getContainer() !== $this) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'This occurrence of '.get_class($module).' is already registered in another module container.'
                 );
             }
@@ -90,14 +92,15 @@ trait ModuleContainerTrait
 
         if (!is_subclass_of($className, $this->getModuleBaseClassName(), true)
             || !is_subclass_of($className, ModuleInterface::class)) {
-            throw new \InvalidArgumentException(
-                'Passed module class name needs to be a class extending '.$this->getModuleBaseClassName()
+            throw new InvalidArgumentException(
+                'Passed module class name '.$className.
+                ' needs to be a class extending '.$this->getModuleBaseClassName()
                 .' and/or '.ModuleInterface::class
             );
         }
 
         if (isset($this->modules[$className])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Module '.$className.' is already registered.'
             );
         }
@@ -140,7 +143,7 @@ trait ModuleContainerTrait
     {
         if ($module instanceof ModuleInterface) {
             if (!in_array($module, $this->modules)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'This occurrence of '.get_class($module).' is not registered.'
                 );
             }
@@ -156,7 +159,7 @@ trait ModuleContainerTrait
         $className = $module;
 
         if (!$this->hasModule($className)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The container doesn\'t contain a '.$className.' module'
             );
         }

@@ -1,2 +1,3 @@
 disabled:
-  - simplified_null_return
+    - phpdoc_var_without_name
+    - simplified_null_return
