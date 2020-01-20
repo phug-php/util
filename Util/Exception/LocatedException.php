@@ -27,17 +27,4 @@ class LocatedException extends Exception
     {
         return $this->location;
     }
-
-    public static function getFailureMessage($action, $message, array $details = [])
-    {
-        $message = "Failed to $action: $message";
-
-        foreach ($details as $name => $value) {
-            if ($value || $value === 0) {
-                $message .= "\n".ucfirst($name).': '.$value;
-            }
-        }
-
-        return $message;
-    }
 }
