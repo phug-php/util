@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Phug\CompatibilityUtil\TestCaseTypeBase;
 use ReflectionMethod;
 
+// @codeCoverageIgnoreStart
 if (!class_exists(TestCaseTypeBase::class)) {
     $setUp = @new ReflectionMethod(PHPUnitTestCase::class, 'setUp');
     $testCaseInitialization = true;
@@ -16,6 +17,7 @@ if (!class_exists(TestCaseTypeBase::class)) {
 
     unset($testCaseInitialization);
 }
+// @codeCoverageIgnoreEnd
 
 class TestCase extends TestCaseTypeBase
 {
@@ -49,6 +51,34 @@ class TestCase extends TestCaseTypeBase
         foreach (array_diff($files, $this->tempDirectoryFiles) as $file) {
             $this->removeFile($this->tempDirectory.DIRECTORY_SEPARATOR.$file);
         }
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function assertStringContains($needle, $haystack, $message = '')
+    {
+        if (!method_exists(self::class, 'assertStringContainsString')) {
+            self::assertContains($needle, $haystack, $message);
+
+            return;
+        }
+
+        self::assertStringContainsString($needle, $haystack, $message);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function assertStringNotContains($needle, $haystack, $message = '')
+    {
+        if (!method_exists(self::class, 'assertStringNotContainsString')) {
+            self::assertNotContains($needle, $haystack, $message);
+
+            return;
+        }
+
+        self::assertStringNotContainsString($needle, $haystack, $message);
     }
 
     protected function removeFile($file)
