@@ -27,7 +27,7 @@ trait ModuleContainerTrait
     public function hasModule($module)
     {
         return $module instanceof ModuleInterface
-            ? in_array($module, $this->modules, true)
+            ? in_array($module, $this->modules)
             : isset($this->modules[$module]);
     }
 
@@ -69,7 +69,7 @@ trait ModuleContainerTrait
     public function addModule($module)
     {
         if ($module instanceof ModuleInterface) {
-            if (in_array($module, $this->modules, true)) {
+            if (in_array($module, $this->modules)) {
                 throw new InvalidArgumentException(
                     'This occurrence of '.get_class($module).' is already registered.'
                 );
@@ -142,7 +142,7 @@ trait ModuleContainerTrait
     public function removeModule($module)
     {
         if ($module instanceof ModuleInterface) {
-            if (!in_array($module, $this->modules, true)) {
+            if (!in_array($module, $this->modules)) {
                 throw new InvalidArgumentException(
                     'This occurrence of '.get_class($module).' is not registered.'
                 );
