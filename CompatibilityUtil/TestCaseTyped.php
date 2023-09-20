@@ -52,5 +52,16 @@ class TestCaseTypeBase extends PHPUnitTestCase
 
         parent::assertFileDoesNotExist($filename, $message);
     }
+
+    public static function assertIsArray($actual, string $message = ''): void
+    {
+        if (!method_exists(parent::class, 'assertIsArray')) {
+            self::assertSame('array', gettype($actual));
+
+            return;
+        }
+
+        parent::assertIsArray($actual, $message);
+    }
 }
 // @codeCoverageIgnoreEnd
