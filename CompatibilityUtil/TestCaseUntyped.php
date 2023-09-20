@@ -41,5 +41,16 @@ class TestCaseTypeBase extends PHPUnitTestCase
 
         parent::assertMatchesRegularExpression($pattern, $string, $message);
     }
+
+    public static function assertFileDoesNotExist($filename, $message = '')
+    {
+        if (!method_exists(parent::class, 'assertFileDoesNotExist')) {
+            self::assertFileNotExists($filename, $message);
+
+            return;
+        }
+
+        parent::assertFileDoesNotExist($filename, $message);
+    }
 }
 // @codeCoverageIgnoreEnd
