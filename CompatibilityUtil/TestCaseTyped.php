@@ -30,5 +30,16 @@ class TestCaseTypeBase extends PHPUnitTestCase
     {
         $this->finishTest();
     }
+
+    public static function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
+    {
+        if (!method_exists(parent::class, 'assertMatchesRegularExpression')) {
+            self::assertRegExp($pattern, $string, $message);
+
+            return;
+        }
+
+        parent::assertMatchesRegularExpression($pattern, $string, $message);
+    }
 }
 // @codeCoverageIgnoreEnd
